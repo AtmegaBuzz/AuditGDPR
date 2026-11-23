@@ -1,11 +1,12 @@
 """Corpus discovery + document-level metadata derived from folder/file naming."""
 from __future__ import annotations
 
+import os
 import re
 from dataclasses import dataclass, asdict
 from pathlib import Path
 
-from .config import DATA_DIR
+from .config import DATA_DIR, DEFAULT_EXCLUDE
 
 _EDPB = re.compile(r"edpb_guidelines_(?P<num>\d+-\d{4})_(?P<topic>.+?)_v(?P<ver>[\d.]+)(?P<draft>_consultation)?$")
 _WP29 = re.compile(r"wp29_wp(?P<num>\d+)rev(?P<rev>\d+)_(?P<topic>.+)$")
@@ -53,5 +54,19 @@ def describe(path: Path) -> DocMeta:
     raise ValueError(f"Unrecognised corpus file name: {path.name}")
 
 
-def discover(root: Path = DATA_DIR) -> list[DocMeta]:
-    return [describe(p) for p in sorted(root.rglob("*.pdf"))]
+def _excluded(path: Path, root: Path, exclude: set[str]) -> bool:
+    """A folder is excluded if its name, its path relative to root, or its absolute path is listed."""
+    rel = path.relative_to(root).as_posix()
+    return path.name in exclude or rel in exclude or str(path.resolve()) in exclude
+
+
+def discover(root: Path = DATA_DIR, exclude: tuple[str, ...] | list[str] = DEFAULT_EXCLUDE) -> list[DocMeta]:
+    """Find PDFs under `root`. Excluded folders are pruned: the walk never descends into them."""
+    root = Path(root).resolve()
+    skip = {e.strip().rstrip("/") for e in exclude if e.strip()} | {str((root / e).resolve()) for e in exclude if e.strip()}
+    paths: list[Path] = []
+    for dirpath, dirnames, filenames in os.walk(root):
+        here = Path(dirpath)
+        dirnames[:] = sorted(d for d in dirnames if not _excluded(here / d, root, skip))   # prune in place
+        paths += [here / f for f in filenames if f.lower().endswith(".pdf")]
+    return [describe(p) for p in sorted(paths)]

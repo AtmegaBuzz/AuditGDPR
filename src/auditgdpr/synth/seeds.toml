@@ -1,0 +1,175 @@
+# Hand-written seeds for the fictional world. The LLM expands these into a fact sheet (bible); you review and freeze it.
+# Each entity has a `tier`: the lowest clearance that may know about it. Writers only ever see entities <= the doc's tier.
+
+[company]
+name = "Acme Corp"
+legal_name = "Acme Corp Ltd (EU establishment) / Acme Corp Inc. (parent)"
+product = "Acme Beacon"
+pitch = "B2B SaaS customer-engagement and analytics platform: CRM, email campaigns, product analytics, and an AI lead-scoring feature."
+size = "about 450 employees"
+eu_hq = "Dublin, Ireland (Acme Corp Ltd); lead supervisory authority is the Irish Data Protection Commission (DPC)"
+parent = "Acme Corp Inc., Austin, Texas, USA"
+roles = "Controller for its own customers' account data, employees, website visitors and marketing; processor for its customers' end-user data stored in Beacon."
+email_domain = "acme.example"
+privacy_contact = "privacy@acme.example"
+today = "2026-10-01"
+rules = [
+  "All email addresses use the acme.example domain.",
+  "No real individuals and no real customer companies. Vendors may be well-known infrastructure providers (e.g. AWS eu-west-1, Stripe) but never invent vendor incidents that blame them.",
+  "Documents are dated between 2024-01-01 and 2026-10-01.",
+]
+
+# ---- People (fictional) ------------------------------------------------------------------------
+[[people]]
+name = "Tomás Reyes"
+role = "Data Protection Officer (DPO)"
+tier = 0
+[[people]]
+name = "Mara Okafor"
+role = "Head of Privacy Operations"
+tier = 1
+[[people]]
+name = "Aoife Brennan"
+role = "Senior Privacy Counsel (Dublin)"
+tier = 1
+[[people]]
+name = "Samir Haddad"
+role = "Chief Information Security Officer (CISO)"
+tier = 1
+[[people]]
+name = "Lena Fischer"
+role = "VP Engineering"
+tier = 1
+[[people]]
+name = "Owen Gallagher"
+role = "Head of Customer Support"
+tier = 1
+[[people]]
+name = "Julia Moreau"
+role = "Product Director, Beacon AI"
+tier = 1
+[[people]]
+name = "Priya Raman"
+role = "General Counsel"
+tier = 2
+[[people]]
+name = "Daniel Whitfield"
+role = "Chief Executive Officer (CEO)"
+tier = 2
+[[people]]
+name = "Helen Zhou"
+role = "Chief Financial Officer (CFO)"
+tier = 2
+[[people]]
+name = "Margaret Ellison"
+role = "Chair of the Board"
+tier = 2
+[[people]]
+name = "Kwame Mensah"
+role = "Head of Internal Audit"
+tier = 2
+
+# ---- Systems (fictional) ---------------------------------------------------------------------------
+[[systems]]
+name = "Acme Beacon"
+what = "the customer-facing product"
+tier = 0
+[[systems]]
+name = "Beacon Settings > Privacy"
+what = "self-service page where customers can export or delete their account data"
+tier = 0
+[[systems]]
+name = "PrivacyDesk"
+what = "internal ticket queue for data-subject requests (DSRs); queues are named INT-Q-*"
+tier = 1
+[[systems]]
+name = "Atlas"
+what = "internal Snowflake-style analytics warehouse holding event and billing history"
+tier = 1
+[[systems]]
+name = "Ledger"
+what = "billing and invoicing system"
+tier = 1
+[[systems]]
+name = "HelpHub"
+what = "customer-support desk and ticketing system"
+tier = 1
+[[systems]]
+name = "Vault"
+what = "immutable backup system; backups are write-once and retained 35 days"
+tier = 1
+
+# ---- Topics. Every topic gets facts at ALL three tiers answering the same practical question at increasing depth.
+[[topics]]
+id = "erasure"
+code = "ERA"
+question = "What happens when a customer or data subject asks Acme to delete their personal data?"
+gdpr = "Art. 12(3)-(6), 17, 19; EDPB 01/2022 on identity checks"
+tags = ["request_intake", "identity_verification", "deadlines", "execution_per_system", "exceptions", "third_party_notification", "backups", "sla_performance", "escalation"]
+tensions = [
+  "Public promise: deletion within one month. Internal SLA is 20 calendar days from verified request.",
+  "Vault immutable backups (35 days) cannot honor erasure; deletion propagates only on expiry. The board formally accepted this residual risk in June 2026 (confidential), with the DPO's dissent minuted.",
+  "Internal audit (H1 2026) found 14% of erasure requests exceeded the 20-day SLA; the main cause was the Atlas deletion job.",
+  "Executives discussed keeping some deleted customers' billing data in Atlas for analytics (confidential).",
+]
+[[topics]]
+id = "access"
+code = "ACC"
+question = "How does Acme handle access (DSAR) and data portability requests?"
+gdpr = "Art. 12, 15, 20; EDPB 01/2022; WP242"
+tags = ["request_intake", "identity_verification", "deadlines", "data_gathering", "redaction", "export_format", "fees_and_refusals"]
+tensions = ["Manual gathering across HelpHub and Atlas makes complex DSARs slow; the audit counted several extension notices sent late."]
+[[topics]]
+id = "breach"
+code = "BRE"
+question = "What happens when Acme suffers a personal data breach, and when is it reported?"
+gdpr = "Art. 33, 34; EDPB 9/2022; EDPB 01/2021"
+tags = ["detection", "severity_assessment", "72h_notification", "customer_notification_processor", "data_subject_communication", "documentation", "roles"]
+tensions = [
+  "Incident CONF-INC-2025-0412 (a misdirected CSV export, 03-2025) was assessed as not notifiable; the legal reasoning is privileged and the post-incident review noted a 9-hour detection delay.",
+]
+[[topics]]
+id = "dpia_ai"
+code = "DPI"
+question = "How does Acme assess privacy risk for new processing, especially AI lead scoring?"
+gdpr = "Art. 22, 35, 36; WP248; WP251"
+tags = ["screening", "dpia_process", "ai_transparency", "human_review", "risk_scoring", "prior_consultation"]
+tensions = ["The DPIA for Beacon AI lead scoring has HIGH residual risk under Art. 22; whether to consult the DPC under Art. 36 is unresolved (confidential)."]
+[[topics]]
+id = "processors"
+code = "PRO"
+question = "How does Acme engage and oversee sub-processors and vendors?"
+gdpr = "Art. 28, 30, 32; EDPB 07/2020"
+tags = ["due_diligence", "dpa_terms", "subprocessor_changes", "audit_rights", "ropa"]
+tensions = ["Two long-standing vendors still lack a fully signed Art. 28 DPA (internal audit finding, confidential)."]
+[[topics]]
+id = "transfers"
+code = "TRA"
+question = "How does Acme transfer personal data outside the EEA?"
+gdpr = "Art. 44-49; EDPB 05/2021"
+tags = ["mechanisms", "tia", "supplementary_measures", "us_parent_access", "vendor_specific"]
+tensions = ["The transfer impact assessment for a US product-analytics vendor is borderline; remediation depends on a contract amendment (confidential)."]
+[[topics]]
+id = "retention"
+code = "RET"
+question = "How long does Acme keep personal data and who enforces it?"
+gdpr = "Art. 5(1)(e), 5(2), 17, 30"
+tags = ["schedule", "deletion_jobs", "legal_hold", "billing_records", "backups", "exceptions"]
+tensions = ["Public retention summary says account data is deleted 30 days after account closure; Atlas actually keeps event history up to 24 months (internal), and execs discussed extending that (confidential)."]
+[[topics]]
+id = "consent"
+code = "CON"
+question = "On what lawful bases and consents does Acme process marketing, analytics and cookie data?"
+gdpr = "Art. 6, 7, 21; EDPB 05/2020; EDPB 01/2024; ePrivacy cookie rules"
+tags = ["cookies", "marketing_preferences", "lia", "withdrawal", "records_of_consent"]
+tensions = ["The product-analytics legitimate-interests assessment rests on an opt-out that was not prominent until a 2026 redesign."]
+[[topics]]
+id = "governance"
+code = "GOV"
+question = "Who owns privacy at Acme, and how is it governed, trained and risk-managed?"
+gdpr = "Art. 24, 25, 37-39, 83; WP243; EDPB 04/2019; EDPB 04/2022"
+tags = ["dpo", "raci", "training", "classification", "privacy_by_design", "risk_register", "fine_exposure", "remediation"]
+tensions = [
+  "DPO reports to the General Counsel in practice, which the DPO has flagged as a possible Art. 38(3) independence concern (confidential).",
+  "Board approved a remediation budget but cut the headcount ask by half (confidential).",
+]

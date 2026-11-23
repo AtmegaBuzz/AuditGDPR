@@ -1,0 +1,670 @@
+# Document manifest: ~37 docs. Tier (0 public, 1 internal, 2 confidential) is the ONLY source of access_level.
+# `topics` select which facts the writer sees (facts of tier <= doc tier). `tags` narrow the REQUIRED facts (own-tier facts).
+# `related` docs are generated first; their summaries (only if tier <= this doc's tier) are shown to the writer.
+# `notes` is free text passed straight to the writer.
+
+[[docs]]
+id = "PUB-NOTICE-001"
+title = "Acme Privacy Notice"
+tier = 0
+doc_type = "public_notice"
+topics = ["erasure", "access", "retention", "consent", "transfers"]
+tags = []
+owner = "Legal & Privacy"
+approver = "General Counsel"
+version = "5.0"
+effective = "2026-06-01"
+audience = "customers, website visitors and prospects"
+articles = [6, 12, 13, 15, 17, 20, 21, 44, 46]
+target_words = 2200
+related = []
+notes = ""
+status = "current"
+
+[[docs]]
+id = "PUB-FAQ-DSR-001"
+title = "Your Data Protection Rights: Frequently Asked Questions"
+tier = 0
+doc_type = "public_faq"
+topics = ["erasure", "access"]
+tags = []
+owner = "Privacy Operations"
+approver = "Data Protection Officer"
+version = "2.2"
+effective = "2026-05-12"
+audience = "customers and end users"
+articles = [12, 15, 17, 20]
+target_words = 1800
+related = ["PUB-NOTICE-001"]
+notes = ""
+status = "current"
+
+[[docs]]
+id = "PUB-TRUST-001"
+title = "Trust Center: Security and Incident Response Overview"
+tier = 0
+doc_type = "public_notice"
+topics = ["breach"]
+tags = []
+owner = "Security"
+approver = "CISO"
+version = "3.0"
+effective = "2026-04-20"
+audience = "customers and prospects doing due diligence"
+articles = [32, 33, 34]
+target_words = 1400
+related = []
+notes = ""
+status = "current"
+
+[[docs]]
+id = "PUB-DPA-001"
+title = "Acme Customer Data Processing Addendum"
+tier = 0
+doc_type = "public_contract"
+topics = ["processors", "breach", "transfers"]
+tags = []
+owner = "Legal"
+approver = "General Counsel"
+version = "4.1"
+effective = "2026-02-01"
+audience = "customers contracting with Acme as processor"
+articles = [28, 32, 33, 46]
+target_words = 2400
+related = ["PUB-SUBPROC-001"]
+notes = ""
+status = "current"
+
+[[docs]]
+id = "PUB-SUBPROC-001"
+title = "Acme Sub-processor List"
+tier = 0
+doc_type = "public_notice"
+topics = ["processors", "transfers"]
+tags = []
+owner = "Legal & Privacy"
+approver = "Data Protection Officer"
+version = "1.9"
+effective = "2026-09-01"
+audience = "customers"
+articles = [28, 44, 46]
+target_words = 900
+related = []
+notes = "Use only vendors named in the company facts. Include purpose, data categories, location and transfer mechanism for each."
+status = "current"
+
+[[docs]]
+id = "PUB-COOKIE-001"
+title = "Cookie Policy"
+tier = 0
+doc_type = "public_notice"
+topics = ["consent"]
+tags = []
+owner = "Legal & Privacy"
+approver = "Data Protection Officer"
+version = "2.0"
+effective = "2026-03-10"
+audience = "website visitors"
+articles = [6, 7]
+target_words = 1200
+related = []
+notes = ""
+status = "current"
+
+[[docs]]
+id = "PUB-AI-001"
+title = "Beacon AI Lead Scoring: Transparency Statement"
+tier = 0
+doc_type = "public_notice"
+topics = ["dpia_ai"]
+tags = []
+owner = "Product"
+approver = "Product Director, Beacon AI"
+version = "1.1"
+effective = "2026-07-01"
+audience = "customers and their end users"
+articles = [13, 22]
+target_words = 1200
+related = []
+notes = ""
+status = "current"
+
+[[docs]]
+id = "PUB-RETAIN-001"
+title = "Data Retention Summary"
+tier = 0
+doc_type = "public_notice"
+topics = ["retention"]
+tags = []
+owner = "Privacy Operations"
+approver = "Data Protection Officer"
+version = "1.4"
+effective = "2026-05-30"
+audience = "customers"
+articles = [5, 17]
+target_words = 900
+related = []
+notes = ""
+status = "current"
+
+[[docs]]
+id = "INT-SOP-ERASE-002"
+title = "Erasure Request Handling Procedure"
+tier = 1
+doc_type = "sop"
+topics = ["erasure"]
+tags = ["request_intake", "identity_verification", "deadlines", "exceptions", "escalation", "third_party_notification"]
+owner = "Privacy Operations"
+approver = "Head of Privacy Operations"
+version = "3.1"
+effective = "2026-03-01"
+audience = "Privacy Operations team and support leads"
+articles = [12, 17, 19]
+target_words = 2600
+related = ["PUB-FAQ-DSR-001"]
+notes = ""
+status = "current"
+
+[[docs]]
+id = "INT-SOP-ERASE-001"
+title = "Erasure Request Handling Procedure (superseded v2.0)"
+tier = 1
+doc_type = "sop"
+topics = ["erasure"]
+tags = ["request_intake", "identity_verification", "deadlines"]
+owner = "Privacy Operations"
+approver = "Head of Privacy Operations"
+version = "2.0"
+effective = "2024-09-01"
+audience = "Privacy Operations team"
+articles = [12, 17]
+target_words = 1800
+related = []
+notes = "SUPERSEDED earlier version, replaced by INT-SOP-ERASE-002 on 2026-03-01. In this older version the internal SLA was 30 calendar days (not 20), requests arrived by a shared mailbox privacy@acme.example rather than PrivacyDesk, there was no Vault backup caveat, and identity verification was by email reply only. State the superseded status clearly in the document-control table. Do not describe the newer procedure."
+status = "superseded"
+
+[[docs]]
+id = "INT-RUN-ERASE-001"
+title = "Erasure Execution Runbook (per system)"
+tier = 1
+doc_type = "runbook"
+topics = ["erasure"]
+tags = ["execution_per_system", "backups"]
+owner = "Privacy Operations & Engineering"
+approver = "VP Engineering"
+version = "2.4"
+effective = "2026-03-15"
+audience = "Privacy Operations engineers"
+articles = [17]
+target_words = 2400
+related = ["INT-SOP-ERASE-002"]
+notes = ""
+status = "current"
+
+[[docs]]
+id = "INT-GUIDE-SUPPORT-001"
+title = "Support Agent Guide: Handling Privacy Requests"
+tier = 1
+doc_type = "guide"
+topics = ["erasure", "access"]
+tags = ["request_intake", "identity_verification", "escalation"]
+owner = "Customer Support"
+approver = "Head of Customer Support"
+version = "1.6"
+effective = "2026-04-02"
+audience = "front-line support agents"
+articles = [12, 15, 17]
+target_words = 1800
+related = ["INT-SOP-ERASE-002", "INT-SOP-DSAR-001"]
+notes = ""
+status = "current"
+
+[[docs]]
+id = "INT-SOP-DSAR-001"
+title = "Data Subject Access and Portability Procedure"
+tier = 1
+doc_type = "sop"
+topics = ["access"]
+tags = []
+owner = "Privacy Operations"
+approver = "Head of Privacy Operations"
+version = "2.5"
+effective = "2026-02-10"
+audience = "Privacy Operations team"
+articles = [12, 15, 20]
+target_words = 2400
+related = ["PUB-FAQ-DSR-001"]
+notes = ""
+status = "current"
+
+[[docs]]
+id = "INT-IRP-001"
+title = "Security Incident Response Plan"
+tier = 1
+doc_type = "policy"
+topics = ["breach"]
+tags = ["detection", "severity_assessment", "roles", "documentation"]
+owner = "Security"
+approver = "CISO"
+version = "4.0"
+effective = "2026-01-15"
+audience = "incident responders, engineering and legal"
+articles = [32, 33]
+target_words = 2600
+related = ["PUB-TRUST-001"]
+notes = ""
+status = "current"
+
+[[docs]]
+id = "INT-RUN-BREACH-001"
+title = "Personal Data Breach Notification Runbook (72-hour clock)"
+tier = 1
+doc_type = "runbook"
+topics = ["breach"]
+tags = ["72h_notification", "customer_notification_processor", "data_subject_communication", "documentation"]
+owner = "Privacy Operations & Security"
+approver = "Data Protection Officer"
+version = "2.1"
+effective = "2026-02-20"
+audience = "incident commanders, DPO office"
+articles = [33, 34]
+target_words = 2400
+related = ["INT-IRP-001", "PUB-DPA-001"]
+notes = ""
+status = "current"
+
+[[docs]]
+id = "INT-SOP-DPIA-001"
+title = "DPIA Procedure and Screening Checklist"
+tier = 1
+doc_type = "sop"
+topics = ["dpia_ai"]
+tags = ["screening", "dpia_process", "prior_consultation"]
+owner = "Privacy Office"
+approver = "Data Protection Officer"
+version = "2.0"
+effective = "2025-11-03"
+audience = "product managers and engineering leads"
+articles = [35, 36]
+target_words = 2200
+related = []
+notes = ""
+status = "current"
+
+[[docs]]
+id = "INT-SOP-VENDOR-001"
+title = "Vendor Onboarding and DPA Checklist"
+tier = 1
+doc_type = "sop"
+topics = ["processors"]
+tags = ["due_diligence", "dpa_terms", "subprocessor_changes"]
+owner = "Legal & Procurement"
+approver = "Senior Privacy Counsel"
+version = "3.2"
+effective = "2026-01-20"
+audience = "procurement and vendor owners"
+articles = [28, 32]
+target_words = 2000
+related = ["PUB-SUBPROC-001"]
+notes = ""
+status = "current"
+
+[[docs]]
+id = "INT-SOP-TRANSFER-001"
+title = "International Transfers Procedure (SCCs and TIA)"
+tier = 1
+doc_type = "sop"
+topics = ["transfers"]
+tags = ["mechanisms", "tia", "supplementary_measures"]
+owner = "Legal & Privacy"
+approver = "Senior Privacy Counsel"
+version = "1.8"
+effective = "2026-03-30"
+audience = "legal, security and vendor owners"
+articles = [44, 46]
+target_words = 2000
+related = ["PUB-SUBPROC-001"]
+notes = ""
+status = "current"
+
+[[docs]]
+id = "INT-SCHED-RET-001"
+title = "Data Retention Schedule"
+tier = 1
+doc_type = "schedule"
+topics = ["retention"]
+tags = ["schedule", "deletion_jobs", "legal_hold", "billing_records"]
+owner = "Privacy Operations"
+approver = "Data Protection Officer"
+version = "3.3"
+effective = "2026-04-15"
+audience = "data owners across Acme"
+articles = [5, 17, 30]
+target_words = 1800
+related = ["PUB-RETAIN-001"]
+notes = ""
+status = "current"
+
+[[docs]]
+id = "INT-ROPA-001"
+title = "Record of Processing Activities (extract)"
+tier = 1
+doc_type = "register"
+topics = ["processors", "retention", "consent"]
+tags = ["ropa"]
+owner = "Privacy Office"
+approver = "Data Protection Officer"
+version = "2026.3"
+effective = "2026-07-31"
+audience = "privacy team and auditors"
+articles = [30]
+target_words = 1800
+related = ["INT-SCHED-RET-001"]
+notes = "Present as a table-based register with ~8 processing activities."
+status = "current"
+
+[[docs]]
+id = "INT-SOP-CONSENT-001"
+title = "Consent and Marketing Preferences Procedure"
+tier = 1
+doc_type = "sop"
+topics = ["consent"]
+tags = ["cookies", "marketing_preferences", "withdrawal", "records_of_consent"]
+owner = "Marketing Operations"
+approver = "Data Protection Officer"
+version = "2.3"
+effective = "2026-05-05"
+audience = "marketing and growth teams"
+articles = [6, 7, 21]
+target_words = 1800
+related = ["PUB-COOKIE-001"]
+notes = ""
+status = "current"
+
+[[docs]]
+id = "INT-LIA-001"
+title = "Legitimate Interests Assessment: Product Analytics"
+tier = 1
+doc_type = "assessment"
+topics = ["consent"]
+tags = ["lia"]
+owner = "Privacy Office"
+approver = "Data Protection Officer"
+version = "1.2"
+effective = "2026-02-14"
+audience = "privacy team and product analytics"
+articles = [6, 21]
+target_words = 1800
+related = []
+notes = ""
+status = "current"
+
+[[docs]]
+id = "INT-CHARTER-DPO-001"
+title = "DPO Charter and Privacy RACI"
+tier = 1
+doc_type = "policy"
+topics = ["governance"]
+tags = ["dpo", "raci"]
+owner = "Privacy Office"
+approver = "General Counsel"
+version = "2.0"
+effective = "2025-12-01"
+audience = "all employees"
+articles = [37, 38, 39]
+target_words = 1800
+related = []
+notes = ""
+status = "current"
+
+[[docs]]
+id = "INT-CHECK-PBD-001"
+title = "Privacy-by-Design Launch Checklist"
+tier = 1
+doc_type = "checklist"
+topics = ["governance", "dpia_ai"]
+tags = ["privacy_by_design"]
+owner = "Privacy Office"
+approver = "Data Protection Officer"
+version = "1.5"
+effective = "2026-03-20"
+audience = "product and engineering"
+articles = [25, 35]
+target_words = 1400
+related = ["INT-SOP-DPIA-001"]
+notes = ""
+status = "current"
+
+[[docs]]
+id = "INT-POL-CLASS-001"
+title = "Data Classification Policy"
+tier = 1
+doc_type = "policy"
+topics = ["governance"]
+tags = ["classification"]
+owner = "Security"
+approver = "CISO"
+version = "2.1"
+effective = "2026-01-08"
+audience = "all employees"
+articles = [5, 32]
+target_words = 1500
+related = []
+notes = "Define the Public / Internal / Confidential labels, who may access each, and handling rules. The labels match the tiers used by Acme's document system."
+status = "current"
+
+[[docs]]
+id = "INT-TRAIN-001"
+title = "Staff Privacy Training Handbook"
+tier = 1
+doc_type = "guide"
+topics = ["governance", "erasure", "breach"]
+tags = ["training"]
+owner = "Privacy Office"
+approver = "Data Protection Officer"
+version = "2026.1"
+effective = "2026-02-01"
+audience = "all employees"
+articles = [5, 12, 33]
+target_words = 1800
+related = ["INT-POL-CLASS-001"]
+notes = ""
+status = "current"
+
+[[docs]]
+id = "CONF-MIN-BRD-2026Q2"
+title = "Board of Directors Minutes: Q2 2026 (Privacy and Risk Items)"
+tier = 2
+doc_type = "minutes"
+topics = ["erasure", "retention", "governance"]
+tags = ["backups", "risk_register", "remediation"]
+owner = "Company Secretary"
+approver = "Chair of the Board"
+version = "1.0"
+effective = "2026-06-12"
+audience = "directors and executive leadership"
+articles = [17, 24, 83]
+target_words = 2400
+related = ["INT-SOP-ERASE-002", "INT-RUN-ERASE-001"]
+notes = "Include resolution CONF-BRD-2026-06-R3 on the Vault backup erasure risk, with the DPO's dissent minuted."
+status = "current"
+
+[[docs]]
+id = "CONF-AUD-DSR-001"
+title = "Internal Audit Report: Data Subject Request SLA Compliance (H1 2026)"
+tier = 2
+doc_type = "audit_report"
+topics = ["erasure", "access", "processors"]
+tags = ["sla_performance"]
+owner = "Internal Audit"
+approver = "Head of Internal Audit"
+version = "1.0"
+effective = "2026-08-05"
+audience = "audit committee and executive leadership"
+articles = [12, 17, 28]
+target_words = 2600
+related = ["INT-SOP-ERASE-002", "INT-SOP-DSAR-001"]
+notes = ""
+status = "current"
+
+[[docs]]
+id = "CONF-PIR-INC-0412"
+title = "Post-Incident Review: CONF-INC-2025-0412 Misdirected CSV Export"
+tier = 2
+doc_type = "incident_review"
+topics = ["breach"]
+tags = []
+owner = "Security"
+approver = "CISO"
+version = "1.0"
+effective = "2025-04-30"
+audience = "incident review board"
+articles = [32, 33]
+target_words = 2200
+related = ["INT-IRP-001", "INT-RUN-BREACH-001"]
+notes = ""
+status = "current"
+
+[[docs]]
+id = "CONF-MEMO-INC-0412"
+title = "Privileged Memorandum: Notification Decision for Incident 0412"
+tier = 2
+doc_type = "legal_memo"
+topics = ["breach"]
+tags = []
+owner = "Legal"
+approver = "General Counsel"
+version = "1.0"
+effective = "2025-04-08"
+audience = "General Counsel and DPO only"
+articles = [33, 34]
+target_words = 2200
+related = ["CONF-PIR-INC-0412"]
+notes = ""
+status = "current"
+
+[[docs]]
+id = "CONF-DPIA-AI-001"
+title = "Data Protection Impact Assessment: Beacon AI Lead Scoring"
+tier = 2
+doc_type = "assessment"
+topics = ["dpia_ai"]
+tags = []
+owner = "Privacy Office"
+approver = "Data Protection Officer"
+version = "1.3"
+effective = "2026-07-20"
+audience = "DPIA review board and executive leadership"
+articles = [22, 35, 36]
+target_words = 3000
+related = ["INT-SOP-DPIA-001", "PUB-AI-001"]
+notes = ""
+status = "current"
+
+[[docs]]
+id = "CONF-TIA-US-001"
+title = "Transfer Impact Assessment: US Product-Analytics Vendor"
+tier = 2
+doc_type = "assessment"
+topics = ["transfers"]
+tags = ["vendor_specific", "us_parent_access"]
+owner = "Legal & Privacy"
+approver = "Senior Privacy Counsel"
+version = "1.1"
+effective = "2026-05-28"
+audience = "legal and executive leadership"
+articles = [44, 46]
+target_words = 2200
+related = ["INT-SOP-TRANSFER-001", "PUB-SUBPROC-001"]
+notes = ""
+status = "current"
+
+[[docs]]
+id = "CONF-CORR-DPC-001"
+title = "Correspondence with the Irish Data Protection Commission (Complaint Inquiry)"
+tier = 2
+doc_type = "correspondence"
+topics = ["erasure", "governance"]
+tags = []
+owner = "Legal"
+approver = "General Counsel"
+version = "1.0"
+effective = "2026-03-18"
+audience = "legal and DPO only"
+articles = [12, 17, 58]
+target_words = 2000
+related = []
+notes = "An exchange of 3-4 letters: DPC inquiry about a complainant whose erasure request exceeded one month; Acme's response; DPC follow-up. Use fictional reference numbers prefixed CONF-."
+status = "current"
+
+[[docs]]
+id = "CONF-CHAT-ATLAS-001"
+title = "Executive Chat Export: Retaining Deleted Customers' Data in Atlas"
+tier = 2
+doc_type = "chat_export"
+topics = ["erasure", "retention"]
+tags = ["backups"]
+owner = "Executive Team"
+approver = "(n/a)"
+version = "1.0"
+effective = "2026-05-19"
+audience = "legal hold record"
+articles = [5, 17]
+target_words = 1400
+related = ["INT-SCHED-RET-001"]
+notes = ""
+status = "current"
+
+[[docs]]
+id = "CONF-REG-RISK-Q3"
+title = "Privacy Risk Register: Q3 2026"
+tier = 2
+doc_type = "register"
+topics = ["governance", "erasure", "processors", "transfers", "dpia_ai", "breach", "retention"]
+tags = ["risk_register"]
+owner = "Privacy Office"
+approver = "Data Protection Officer"
+version = "2026.Q3"
+effective = "2026-09-15"
+audience = "risk committee and board"
+articles = [24, 32, 83]
+target_words = 2400
+related = ["CONF-MIN-BRD-2026Q2", "CONF-AUD-DSR-001"]
+notes = "Present as a table of ~10 risks with IDs CONF-RISK-..., likelihood, impact, owner, status."
+status = "current"
+
+[[docs]]
+id = "CONF-MEMO-FINE-001"
+title = "Privileged Memorandum: Article 83 Fine Exposure Assessment"
+tier = 2
+doc_type = "legal_memo"
+topics = ["governance"]
+tags = ["fine_exposure"]
+owner = "Legal"
+approver = "General Counsel"
+version = "1.0"
+effective = "2026-09-02"
+audience = "General Counsel, CFO and CEO"
+articles = [83]
+target_words = 2400
+related = ["CONF-REG-RISK-Q3"]
+notes = ""
+status = "current"
+
+[[docs]]
+id = "CONF-PLAN-REM-001"
+title = "Privacy Remediation Roadmap and Budget FY2026-27"
+tier = 2
+doc_type = "plan"
+topics = ["governance", "erasure", "processors"]
+tags = ["remediation"]
+owner = "Privacy Office"
+approver = "Chief Financial Officer"
+version = "1.2"
+effective = "2026-09-22"
+audience = "executive leadership and board"
+articles = [17, 24, 28]
+target_words = 2200
+related = ["CONF-REG-RISK-Q3", "CONF-MEMO-FINE-001"]
+notes = ""
+status = "current"

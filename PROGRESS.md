@@ -12,7 +12,7 @@ Legend: ✅ done · 🟡 partial / known gaps · ⬜ not started
                       └────────────────────────────────────────────────────────────┘
 
   [A] CORPUS ──► [B] EXTRACT ──► [C] STRUCTURE ──► [D] CHUNK ──► [E] EMBED ──► [F] STORE
-   17 PDFs        PyMuPDF         parsers per        flag-driven    BAAI/bge      Qdrant
+   17 PDFs        PyMuPDF         parsers per        flag-driven    BAAI/bge      pgvector
    ✅             ✅              doc profile 🟡     ✅             on Metal ✅   (local) ✅
                                                          │
                                                   --structure-aware
@@ -65,7 +65,7 @@ Queries use the BGE instruction prefix; documents don't. ~33 s for the full corp
 - **Slot:** model is a CLI option (`--model BAAI/bge-m3`, `bge-large-en-v1.5`, …). Change `EMBED_DIM` handling is automatic.
 
 ### [F] Vector store — ✅  (`store.py`, `docker-compose.yml`)
-**Qdrant server in Docker** (`docker compose up -d`; REST/dashboard `localhost:6333`, gRPC `6334`, named volume `qdrant_storage`). Client URL via `QDRANT_URL` env (default `http://localhost:6333`). Embeddings still run on the host Metal GPU (Docker can't use it). Two collections, so modes are A/B-comparable:
+**Postgres + pgvector in Docker** (`docker compose up -d`; `localhost:5432`, named volume `pgdata`). DSN via `DATABASE_URL` env (default `postgresql://auditgdpr:auditgdpr@localhost:5432/auditgdpr`). Embeddings still run on the host Metal GPU (Docker can't use it). Two tables (HNSW cosine index), so modes are A/B-comparable:
 `gdpr_structure_aware`, `gdpr_fixed`. Deterministic point ids (uuid5 of `doc:index`); payload = metadata + `text`.
 - Multiple processes (CLI, future API) can share the server.
 
@@ -80,14 +80,31 @@ Planned slots, contracts already implied:
   *First informal check: for "within how many hours must a breach be reported" neither mode put GDPR Art. 33 in the top 3 — needs [J] to quantify.*
 - **[K]** thin service over [G]–[I].
 
+### [L] Synthetic company corpus (Acme Corp) — 🟡  (`synth/`)
+Role-based RAG needs internal/confidential documents that don't exist, so they're generated with **Cloudflare Workers AI**
+for a fictional SaaS company (Acme Beacon, Dublin EU base). 37 docs across tiers: public (0) / internal (1) / confidential (2).
+```
+seeds.toml ─► bible (fact sheet, tier-tagged) ─► [human review, --freeze] ─► manifest.toml (37 docs)
+      ─► outline ─► sections (writer: glm-5.3) ─► code checks ─► judge (deepseek-v4-pro) ─► revise ≤2x ─► data/acme/<tier>/<id>.md
+```
+- **Writer only sees facts cleared for the doc's tier**; the judge sees all tiers (that asymmetry catches leakage).
+- Identifier canaries: `INT-*` (internal) and `CONF-*` (confidential) ids; code checks fail any doc containing a higher-tier id,
+  higher-tier people/systems, or figures that only exist in higher-tier facts. `access_level` is written from the manifest, never by the model.
+- Docs generate in dependency waves (`related`); earlier docs' summaries feed later ones. Calls are cached (`artifacts/synth/cache`), runs resume.
+- Failing docs land in `artifacts/synth/needs_review/` with an `.issues.txt`.
+- Offline tests (no cost): `python tests/test_synth_offline.py`, `python tests/test_menu.py`.
+- **Interactive menu:** run `auditgdpr` with no arguments (or `auditgdpr menu`): generate golden set / generate company docs. It detects existing output and offers *Generate new* (deletes it first, after a confirm) or *Exit*; *Continue* appears when a company-docs run is partial.
+- **Not done yet:** a live run (needs `CLOUDFLARE_*` in `.env`; start with `synth bakeoff`), Markdown parser + `access_level` in the
+  store/ingest, clearance filter / RLS in retrieval, role-aware golden set.
+
 ## Pipeline entry points
 
 ```bash
-docker compose up -d                            # start Qdrant
+docker compose up -d                            # start Postgres+pgvector
 uv sync
 uv run auditgdpr ingest --structure-aware      # headers + metadata aware chunking  -> gdpr_structure_aware
 uv run auditgdpr ingest                         # baseline fixed windows             -> gdpr_fixed
-uv run auditgdpr ingest --structure-aware --dry-run   # chunk + export JSONL only (no GPU, no Qdrant)
+uv run auditgdpr ingest --structure-aware --dry-run   # chunk + export JSONL only (no GPU, no database)
 uv run auditgdpr ingest --only wp29 --structure-aware # subset of documents
 uv run auditgdpr search "72 hour breach notification" --structure-aware --k 5
 ```
@@ -107,11 +124,15 @@ src/auditgdpr/
     fixed.py           [D] baseline chunker
     tokens.py          tokenizer-accurate budgeting
   embed.py             [E] bge on MPS
-  store.py             [F] Qdrant client (Docker)
+  store.py             [F] pgvector store (psycopg, Docker)
   pipeline.py          orchestration (the flag lives here)
-  cli.py               `auditgdpr ingest | search`
+  cli.py               `auditgdpr ingest | search | golden | synth ...`
+  synth/               [L] Acme corpus: seeds, manifest, prompts, bible, generate, validate, emit
 ```
 
 ## Changelog
+- 2026-11-23 — interactive menu (`auditgdpr` / `auditgdpr menu`) with exists-check and generate-new/exit.
+- 2026-11-23 — [L] synthetic Acme Corp corpus generator (Workers AI): bible → docs → validate; offline-tested, not yet run live.
 - 2026-11-23 — Qdrant moved from embedded local mode to Docker Compose; collections re-ingested.
+- 2026-11-23 — Qdrant replaced by Postgres + pgvector (Docker Compose); re-ingest required.
 - 2026-11-23 — [A]–[F] + basic [G]: structure-aware vs fixed ingestion pipeline running on Metal, Qdrant populated.

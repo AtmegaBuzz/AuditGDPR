@@ -1,0 +1,2033 @@
+{
+  "model": "@cf/zai-org/glm-5.3",
+  "facts": [
+    {
+      "id": "F-ERA-01",
+      "topic": "erasure",
+      "tier": "public",
+      "tags": [
+        "request_intake",
+        "deadlines"
+      ],
+      "text": "Acme's privacy notice states that when a customer or data subject asks Acme to delete their personal data, Acme responds within one month of receiving the request, as required by Article 12(3) GDPR."
+    },
+    {
+      "id": "F-ERA-02",
+      "topic": "erasure",
+      "tier": "public",
+      "tags": [
+        "request_intake"
+      ],
+      "text": "Data-subject deletion requests can be submitted to privacy@acme.example or through the self-service Beacon Settings > Privacy page, where account holders can delete their own account data."
+    },
+    {
+      "id": "F-ERA-03",
+      "topic": "erasure",
+      "tier": "public",
+      "tags": [
+        "identity_verification"
+      ],
+      "text": "Acme's privacy notice explains that, consistent with Article 12(6) GDPR, Acme may request additional information to confirm the identity of the requester where it has reasonable doubts about that identity."
+    },
+    {
+      "id": "F-ERA-04",
+      "topic": "erasure",
+      "tier": "public",
+      "tags": [
+        "exceptions"
+      ],
+      "text": "Acme's privacy notice states that erasure requests may be refused in whole or in part where an exception under Article 17(3) GDPR applies, for example where data must be kept to comply with a legal obligation or for the establishment, exercise or defence of legal claims."
+    },
+    {
+      "id": "F-ERA-05",
+      "topic": "erasure",
+      "tier": "public",
+      "tags": [
+        "third_party_notification"
+      ],
+      "text": "Acme's privacy notice commits that where personal data has been disclosed to other recipients and is erased at the subject's request, Acme notifies each recipient of the erasure unless this is impossible or involves disproportionate effort, in line with Article 19 GDPR."
+    },
+    {
+      "id": "F-ERA-06",
+      "topic": "erasure",
+      "tier": "public",
+      "tags": [
+        "deadlines"
+      ],
+      "text": "Acme's privacy notice discloses that under Article 12(3) GDPR the one-month response period may be extended by two further months for complex or numerous requests, and that the data subject will be informed of any extension and its reasons within one month."
+    },
+    {
+      "id": "F-ERA-07",
+      "topic": "erasure",
+      "tier": "internal",
+      "tags": [
+        "request_intake",
+        "deadlines"
+      ],
+      "text": "Privacy Operations runs an internal SLA of 20 calendar days from identity verification to complete erasure, stricter than the one-month statutory deadline in Article 12(3) GDPR; requests are logged in the PrivacyDesk queue INT-Q-ERASE."
+    },
+    {
+      "id": "F-ERA-08",
+      "topic": "erasure",
+      "tier": "internal",
+      "tags": [
+        "request_intake",
+        "identity_verification"
+      ],
+      "text": "DSR intake form INT-FORM-03 requires the requester's account ID, the systems to be checked (Beacon, Ledger, Atlas, HelpHub) and identity evidence; identity checks follow EDPB Guidelines 01/2022 principles, and only verified requests start the 20-day SLA."
+    },
+    {
+      "id": "F-ERA-09",
+      "topic": "erasure",
+      "tier": "internal",
+      "tags": [
+        "identity_verification",
+        "escalation"
+      ],
+      "text": "Mara Okafor's Privacy Operations team (three analysts) performs identity verification; requests where identity cannot be confirmed within 5 business days are escalated to the DPO, Tomás Reyes, for a decision under Article 12(6) GDPR."
+    },
+    {
+      "id": "F-ERA-10",
+      "topic": "erasure",
+      "tier": "internal",
+      "tags": [
+        "execution_per_system"
+      ],
+      "text": "Once verified, an erasure request triggers deletion jobs in four systems in order: Beacon (account and profile data within 3 days), Ledger (billing records flagged for legal-exception review), Atlas (event and billing history via the Atlas deletion job), and HelpHub (support tickets within 5 days)."
+    },
+    {
+      "id": "F-ERA-11",
+      "topic": "erasure",
+      "tier": "internal",
+      "tags": [
+        "exceptions"
+      ],
+      "text": "Erasure is executed except where the Article 17(3)(b)/(e) exception checklist INT-CHK-ERASE applies: Ledger invoices are retained 6 years for Irish tax law, and data subject to a legal hold is excluded and the subject informed of the refusal under Article 12(4) GDPR within one month."
+    },
+    {
+      "id": "F-ERA-12",
+      "topic": "erasure",
+      "tier": "internal",
+      "tags": [
+        "third_party_notification"
+      ],
+      "text": "For verified erasure requests, third-party notification under Article 19 GDPR is sent to Stripe (payer data) and any sub-processors listed in the current sub-processor register within 10 calendar days of execution, using notification template INT-TPL-19."
+    },
+    {
+      "id": "F-ERA-13",
+      "topic": "erasure",
+      "tier": "internal",
+      "tags": [
+        "backups"
+      ],
+      "text": "Vault immutable backups are write-once and retained 35 days; erasure cannot be executed inside Vault, so deletion propagates automatically only when each backup expires, and Privacy Ops records the expiry date on the ticket in INT-Q-ERASE."
+    },
+    {
+      "id": "F-ERA-14",
+      "topic": "erasure",
+      "tier": "internal",
+      "tags": [
+        "sla_performance",
+        "escalation"
+      ],
+      "text": "Tickets breaching day 14 of the 20-day SLA are escalated to the Privacy Operations lead; breaches of day 20 are reported weekly to the DPO and to Lena Fischer (VP Engineering) for system-level causes."
+    },
+    {
+      "id": "F-ERA-15",
+      "topic": "erasure",
+      "tier": "internal",
+      "tags": [
+        "execution_per_system",
+        "sla_performance"
+      ],
+      "text": "The Atlas deletion job runs nightly but has a known defect: it fails on records with more than 500 linked event rows, requiring manual re-runs by the Data Platform team, which adds an average of 6 days to affected tickets."
+    },
+    {
+      "id": "F-ERA-16",
+      "topic": "erasure",
+      "tier": "confidential",
+      "tags": [
+        "sla_performance"
+      ],
+      "text": "Internal Audit (Kwame Mensah) reported in H1 2026 that 14% of erasure requests in the audited period exceeded the 20-day internal SLA, with the Atlas deletion job identified as the main cause; all were still completed within the statutory one month."
+    },
+    {
+      "id": "F-ERA-17",
+      "topic": "erasure",
+      "tier": "confidential",
+      "tags": [
+        "backups",
+        "escalation"
+      ],
+      "text": "Board resolution CONF-BRD-2026-06-R3, adopted 12 June 2026, formally accepted the residual risk that personal data of subjects whose erasure requests are granted remains in Vault immutable backups for up to 35 days after execution."
+    },
+    {
+      "id": "F-ERA-18",
+      "topic": "erasure",
+      "tier": "confidential",
+      "tags": [
+        "backups"
+      ],
+      "text": "DPO Tomás Reyes dissented from CONF-BRD-2026-06-R3; his dissent is minuted, arguing that 35-day retention in Vault should be disclosed in the privacy notice and that Acme should evaluate a shorter backup retention or encryption-key destruction approach."
+    },
+    {
+      "id": "F-ERA-19",
+      "topic": "erasure",
+      "tier": "confidential",
+      "tags": [
+        "execution_per_system",
+        "exceptions"
+      ],
+      "text": "CONF-RISK-07 records a Q2 2026 executive discussion, initiated by Helen Zhou (CFO) and Julia Moreau (Product Director, Beacon AI), on retaining deleted customers' billing history in Atlas for churn analytics; Priya Raman (General Counsel) advised this could conflict with Article 17(1)(a) and 5(1)(e) GDPR."
+    },
+    {
+      "id": "F-ERA-20",
+      "topic": "erasure",
+      "tier": "confidential",
+      "tags": [
+        "execution_per_system",
+        "third_party_notification"
+      ],
+      "text": "CONF-RISK-07 was closed in August 2026 with a decision to pseudonymise rather than retain raw identifiers in Atlas analytics, with implementation owned by Lena Fischer and a compliance review by Aoife Brennan due by 31 January 2027."
+    },
+    {
+      "id": "F-ERA-21",
+      "topic": "erasure",
+      "tier": "confidential",
+      "tags": [
+        "sla_performance",
+        "escalation"
+      ],
+      "text": "Following the H1 2026 audit finding, the executive team approved a remediation budget of EUR 180,000 to rewrite the Atlas deletion job (target: full erasure execution within 5 days of trigger, by Q1 2027), because repeated SLA breaches risk complaints to the Irish DPC under Article 77 GDPR and Art. 83(5) exposure."
+    },
+    {
+      "id": "F-ERA-22",
+      "topic": "erasure",
+      "tier": "confidential",
+      "tags": [
+        "deadlines",
+        "escalation"
+      ],
+      "text": "In September 2026, one data subject whose erasure request took 27 days (7 days over the internal SLA) complained to the Irish DPC; CONF-INC-2026-0901 tracks Acme's response, led by Aoife Brennan, which relies on compliance with the one-month statutory deadline under Article 12(3) GDPR."
+    },
+    {
+      "id": "F-ERA-23",
+      "topic": "erasure",
+      "tier": "confidential",
+      "tags": [
+        "exceptions",
+        "backups"
+      ],
+      "text": "Senior Privacy Counsel Aoife Brennan's legal memo of 3 June 2026 (filed as CONF-MEMO-2026-ERASE) concluded that Vault's 35-day immutable retention is defensible as an Art. 32/5(1)(f)-style security backup practice, but only if Acme does not access restored backups to resurrect erased profiles; access to restored Vault data for erasure-related purposes is restricted by the CISO, Samir Haddad."
+    },
+    {
+      "id": "F-ACC-01",
+      "topic": "access",
+      "tier": "public",
+      "tags": [
+        "request_intake",
+        "deadlines"
+      ],
+      "text": "Acme's privacy notice states that individuals may exercise their right of access and data portability by contacting privacy@acme.example, and that Acme responds without undue delay and in any event within one month of receipt, extendable by two further months for complex requests as permitted by Art. 12(3) GDPR."
+    },
+    {
+      "id": "F-ACC-02",
+      "topic": "access",
+      "tier": "public",
+      "tags": [
+        "export_format"
+      ],
+      "text": "Acme's trust centre states that Beacon customers can export their account data at any time via Beacon Settings > Privacy, in a structured, commonly used, machine-readable format (JSON and CSV), consistent with Art. 20 GDPR."
+    },
+    {
+      "id": "F-ACC-03",
+      "topic": "access",
+      "tier": "public",
+      "tags": [
+        "fees_and_refusals"
+      ],
+      "text": "Acme's privacy notice states that the first copy of personal data requested under Art. 15 is provided free of charge, and that Acme will only charge a reasonable fee or refuse a request where it is manifestly unfounded or excessive, in line with Art. 12(5) GDPR."
+    },
+    {
+      "id": "F-ACC-04",
+      "topic": "access",
+      "tier": "public",
+      "tags": [
+        "identity_verification",
+        "redaction"
+      ],
+      "text": "Acme's privacy notice explains that where it has reasonable doubts about identity, it may request additional information to confirm it under Art. 12(6) GDPR, and that copies provided will not adversely affect the rights and freedoms of others (Art. 15(4))."
+    },
+    {
+      "id": "F-ACC-05",
+      "topic": "access",
+      "tier": "public",
+      "tags": [
+        "request_intake"
+      ],
+      "text": "Acme's website lists Tomás Reyes as Data Protection Officer and contact point for data-subject requests, and states that requesters may lodge a complaint with a supervisory authority, including the Irish Data Protection Commission."
+    },
+    {
+      "id": "F-ACC-06",
+      "topic": "access",
+      "tier": "public",
+      "tags": [
+        "data_gathering",
+        "deadlines"
+      ],
+      "text": "Acme's DPA commits that, as processor for customers' end-user data, Acme assists customers in responding to data-subject access and portability requests, referring to Art. 28(3)(e) GDPR."
+    },
+    {
+      "id": "F-ACC-07",
+      "topic": "access",
+      "tier": "internal",
+      "tags": [
+        "request_intake"
+      ],
+      "text": "All DSARs are triaged into the PrivacyDesk queue INT-Q-DSAR, which is staffed by Mara Okafor's Privacy Operations team (5 analysts); requests arriving via privacy@acme.example, HelpHub tickets, or Beacon Settings > Privacy must be logged in INT-Q-DSAR within one business day of receipt."
+    },
+    {
+      "id": "F-ACC-08",
+      "topic": "access",
+      "tier": "internal",
+      "tags": [
+        "identity_verification"
+      ],
+      "text": "Identity verification for DSARs follows checklist INT-FORM-03: for Beacon account holders, verification via logged-in session plus one proof-of-email; for non-customers, government ID matched to the requester's data, with the ID copy deleted within 24 hours of verification."
+    },
+    {
+      "id": "F-ACC-09",
+      "topic": "access",
+      "tier": "internal",
+      "tags": [
+        "deadlines"
+      ],
+      "text": "Acme's internal SLA targets a DSAR response within 20 calendar days, stricter than the one-month legal deadline in Art. 12(3) GDPR; any extension under Art. 12(3) must be notified to the data subject before day 30 with reasons."
+    },
+    {
+      "id": "F-ACC-10",
+      "topic": "access",
+      "tier": "internal",
+      "tags": [
+        "data_gathering"
+      ],
+      "text": "DSAR data gathering is manual across three systems: account and end-user records from Beacon, event and billing history from Atlas, and support tickets from HelpHub; analysts run the canned queries in INT-FORM-05 for Atlas and a HelpHub admin export for each requester's tickets, because no automated cross-system DSAR search tool exists."
+    },
+    {
+      "id": "F-ACC-11",
+      "topic": "access",
+      "tier": "internal",
+      "tags": [
+        "data_gathering"
+      ],
+      "text": "The AI lead-scoring feature's outputs for a data subject are retrieved via a dedicated Atlas query in INT-FORM-05 and included in the Art. 15(1) supplementary information pack, including the fact that lead scores are automated evaluations."
+    },
+    {
+      "id": "F-ACC-12",
+      "topic": "access",
+      "tier": "internal",
+      "tags": [
+        "redaction"
+      ],
+      "text": "Before release, DSAR packages are redacted per checklist INT-FORM-06: third-party personal data in support tickets (HelpHub) and other customers' data in Atlas event logs are removed under Art. 15(4), and a second analyst performs a documented four-eyes review."
+    },
+    {
+      "id": "F-ACC-13",
+      "topic": "access",
+      "tier": "internal",
+      "tags": [
+        "export_format"
+      ],
+      "text": "Portability requests (Art. 20) are fulfilled only for data the subject provided, processed on consent or contract, and by automated means: Beacon account data is exported as JSON/CSV via Beacon Settings > Privacy; analytics event data is delivered as CSV from Atlas; manual redaction steps are excluded from portability scope."
+    },
+    {
+      "id": "F-ACC-14",
+      "topic": "access",
+      "tier": "internal",
+      "tags": [
+        "fees_and_refusals"
+      ],
+      "text": "Refusals or fees under Art. 12(5) require sign-off by Mara Okafor and legal review by Aoife Brennan before the Art. 12(4) notice is sent, using template INT-FORM-07 which includes the reasons, the complaint right, and the judicial remedy right."
+    },
+    {
+      "id": "F-ACC-15",
+      "topic": "access",
+      "tier": "internal",
+      "tags": [
+        "deadlines",
+        "request_intake"
+      ],
+      "text": "Requests received from Acme's own customers about end-user data are routed to queue INT-Q-DSAR-CUST and handled as controller-assistance tickets under the DPA; the SLA is to provide the customer the requested assistance within 10 business days."
+    },
+    {
+      "id": "F-ACC-16",
+      "topic": "access",
+      "tier": "internal",
+      "tags": [
+        "data_gathering"
+      ],
+      "text": "Vault backups (write-once, 35-day retention) are not searched for DSARs; the documented position in the PrivacyDesk runbook is that Beacon, Atlas and HelpHub production systems are the systems of record and Vault is disaster-recovery only."
+    },
+    {
+      "id": "F-ACC-17",
+      "topic": "access",
+      "tier": "confidential",
+      "tags": [
+        "deadlines",
+        "request_intake"
+      ],
+      "text": "The 2026 internal audit by Kwame Mensah (report CONF-AUD-2026-03) found that of 41 complex DSARs requiring an Art. 12(3) extension in 2025, 9 extension notices were sent late — 6 after day 30 and 3 after day 45 — because manual Atlas and HelpHub gathering consumed most of the first month."
+    },
+    {
+      "id": "F-ACC-18",
+      "topic": "access",
+      "tier": "confidential",
+      "tags": [
+        "deadlines",
+        "data_gathering"
+      ],
+      "text": "CONF-AUD-2026-03 quantified the gap: simple DSARs were closed in a median of 12 days, but complex DSARs spanning HelpHub and Atlas took a median of 58 days, breaching the two-month outer limit in Art. 12(3) in 2 of 41 sampled complex cases in 2025."
+    },
+    {
+      "id": "F-ACC-19",
+      "topic": "access",
+      "tier": "confidential",
+      "tags": [
+        "request_intake",
+        "deadlines"
+      ],
+      "text": "Board resolution CONF-BRD-2026-06-R3 (June 2026) accepted the audit findings and approved EUR 240,000 in 2026-2027 for an automated DSAR search tool spanning Beacon, Atlas and HelpHub, with Lena Fischer's Engineering org owning delivery and a target of reducing complex-DSAR median handling time below 30 days by Q3 2027."
+    },
+    {
+      "id": "F-ACC-20",
+      "topic": "access",
+      "tier": "confidential",
+      "tags": [
+        "deadlines",
+        "fees_and_refusals"
+      ],
+      "text": "CONF-RISK-07 on the 2026 risk register rates late Art. 12(3) extension notices as a medium residual risk (likelihood likely, impact moderate) with a potential Art. 83(5) exposure of up to EUR 20 million or 4% of turnover for infringements of Articles 12-22."
+    },
+    {
+      "id": "F-ACC-21",
+      "topic": "access",
+      "tier": "confidential",
+      "tags": [
+        "request_intake"
+      ],
+      "text": "Priya Raman's legal memo of 2026-07-14 (CONF-MEMO-2026-07) concluded that the two breaches of the two-month outer limit in 2025 were reportable compliance failures but did not warrant proactive disclosure to the DPC; the DPO Tomás Reyes dissented, arguing Acme should self-report the pattern of late extension notices."
+    },
+    {
+      "id": "F-ACC-22",
+      "topic": "access",
+      "tier": "confidential",
+      "tags": [
+        "deadlines",
+        "data_gathering"
+      ],
+      "text": "As an interim control approved under CONF-BRD-2026-06-R3, complex DSARs are escalated to Mara Okafor at day 15 and to Aoife Brennan at day 25, and manual Atlas gathering for complex requests is prioritised by a named analyst per ticket rather than a shared queue."
+    },
+    {
+      "id": "F-ACC-23",
+      "topic": "access",
+      "tier": "confidential",
+      "tags": [
+        "redaction",
+        "fees_and_refusals"
+      ],
+      "text": "In Q1 2026 Acme refused one DSAR as manifestly excessive (the requester filed 14 near-identical access requests in three months); Aoife Brennan documented the Art. 12(5) analysis in CONF-FILE-2026-DSAR-114 and the refusal was upheld after the requester complained to the DPC, which closed the complaint without action in 2026-05."
+    },
+    {
+      "id": "F-BRE-01",
+      "topic": "breach",
+      "tier": "public",
+      "tags": [
+        "72h_notification",
+        "roles"
+      ],
+      "text": "Acme Corp Ltd notifies the Irish Data Protection Commission (DPC), its lead supervisory authority, of any personal data breach likely to result in a risk to individuals' rights and freedoms without undue delay and, where feasible, no later than 72 hours after becoming aware of it, in line with GDPR Article 33(1)."
+    },
+    {
+      "id": "F-BRE-02",
+      "topic": "breach",
+      "tier": "public",
+      "tags": [
+        "data_subject_communication",
+        "customer_notification_processor"
+      ],
+      "text": "Where a personal data breach is likely to result in a high risk to affected individuals, Acme communicates the breach to those individuals without undue delay, as required by GDPR Article 34(1)."
+    },
+    {
+      "id": "F-BRE-03",
+      "topic": "breach",
+      "tier": "public",
+      "tags": [
+        "customer_notification_processor",
+        "roles"
+      ],
+      "text": "Because Acme acts as a processor for its customers' end-user data in the Beacon platform, Acme's Data Processing Agreement commits it to notify the affected customer (as controller) without undue delay after becoming aware of any personal data breach, per GDPR Article 33(2)."
+    },
+    {
+      "id": "F-BRE-04",
+      "topic": "breach",
+      "tier": "public",
+      "tags": [
+        "documentation"
+      ],
+      "text": "Acme documents every personal data breach, including its facts, effects and the remedial action taken, whether or not the breach is reported to a supervisory authority, in line with GDPR Article 33(5)."
+    },
+    {
+      "id": "F-BRE-05",
+      "topic": "breach",
+      "tier": "public",
+      "tags": [
+        "roles"
+      ],
+      "text": "Questions or reports about a suspected personal data breach at Acme can be sent to privacy@acme.example, which is monitored by the office of the Data Protection Officer, Tomás Reyes."
+    },
+    {
+      "id": "F-BRE-06",
+      "topic": "breach",
+      "tier": "internal",
+      "tags": [
+        "detection",
+        "roles"
+      ],
+      "text": "All suspected personal data breaches are triaged in the PrivacyDesk queue INT-Q-BREACH, owned by Mara Okafor, Head of Privacy Operations; the triage SLA is initial assessment within 2 hours of the ticket being raised during business hours, and within 6 hours outside business hours."
+    },
+    {
+      "id": "F-BRE-07",
+      "topic": "breach",
+      "tier": "internal",
+      "tags": [
+        "severity_assessment",
+        "roles"
+      ],
+      "text": "Breach severity is scored S1-S4 using the internal severity matrix maintained by Mara Okafor's team: S1 (high risk to individuals, mandatory DPC notification) and S2 (risk to individuals, case-by-case DPC notification) both trigger the 72-hour Article 33(1) clock; S3 (no likely risk) and S4 (near miss / no personal data) do not."
+    },
+    {
+      "id": "F-BRE-08",
+      "topic": "breach",
+      "tier": "internal",
+      "tags": [
+        "72h_notification"
+      ],
+      "text": "Acme's internal target for submitting an Article 33(1) notification to the DPC is 48 hours from awareness, stricter than the 72-hour legal deadline; the DPO, Tomás Reyes, signs off every notification before submission via the DPC portal."
+    },
+    {
+      "id": "F-BRE-09",
+      "topic": "breach",
+      "tier": "internal",
+      "tags": [
+        "detection",
+        "roles"
+      ],
+      "text": "The CISO, Samir Haddad, owns breach detection: Beacon and Atlas alert rules feed a 24/7 security on-call rotation, with an internal target of mean time to detect of 1 hour for S1/S2-classified incidents."
+    },
+    {
+      "id": "F-BRE-10",
+      "topic": "breach",
+      "tier": "internal",
+      "tags": [
+        "severity_assessment",
+        "documentation"
+      ],
+      "text": "Severity assessments are recorded on form INT-FORM-11 (Breach Assessment Record), which captures the Article 33(3) content: nature of the breach, categories and approximate numbers of data subjects and records, DPO contact details, likely consequences, and measures taken or proposed."
+    },
+    {
+      "id": "F-BRE-11",
+      "topic": "breach",
+      "tier": "internal",
+      "tags": [
+        "customer_notification_processor"
+      ],
+      "text": "For processor-side breaches affecting customer data in Beacon, the internal target is to notify the affected customer-controller within 4 hours of awareness, ahead of the 24-hour contractual commitment in Acme's standard Data Processing Agreement; notifications are sent by the Customer Support team led by Owen Gallagher using HelpHub templates."
+    },
+    {
+      "id": "F-BRE-12",
+      "topic": "breach",
+      "tier": "internal",
+      "tags": [
+        "data_subject_communication",
+        "roles"
+      ],
+      "text": "Where an S1 breach requires Article 34(1) communication to affected individuals, the draft notice is prepared by Privacy Operations, reviewed by Senior Privacy Counsel Aoife Brennan, and issued by email from privacy@acme.example; Owen Gallagher's support team staffs the resulting inbound questions in HelpHub."
+    },
+    {
+      "id": "F-BRE-13",
+      "topic": "breach",
+      "tier": "internal",
+      "tags": [
+        "documentation"
+      ],
+      "text": "The complete breach register required by Article 33(5) is maintained in Vault, Acme's write-once immutable backup system, with each entry retained for 5 years; quarterly extracts are reviewed by Kwame Mensah's Internal Audit team."
+    },
+    {
+      "id": "F-BRE-14",
+      "topic": "breach",
+      "tier": "internal",
+      "tags": [
+        "detection"
+      ],
+      "text": "Missed detections are escalated: if a breach is discovered by any means other than the automated alerting in Beacon or Atlas (e.g. a manual report), the incident is flagged for a detection-gap review by Lena Fischer's Engineering organisation within 10 working days."
+    },
+    {
+      "id": "F-BRE-15",
+      "topic": "breach",
+      "tier": "confidential",
+      "tags": [
+        "severity_assessment",
+        "documentation"
+      ],
+      "text": "Incident CONF-INC-2025-0412: on 14 March 2025, a Beacon analytics CSV export containing records of approximately 12,500 end-user data subjects of one customer was misdirected to an external recipient's email address; the export was recalled from the recipient's inbox within 40 minutes."
+    },
+    {
+      "id": "F-BRE-16",
+      "topic": "breach",
+      "tier": "confidential",
+      "tags": [
+        "severity_assessment",
+        "72h_notification"
+      ],
+      "text": "CONF-INC-2025-0412 was assessed as S3 (not notifiable) on the grounds that the recipient was a verified professional contact who confirmed deletion and the data category was low-sensitivity engagement metrics; the legal reasoning supporting the non-notification decision is set out in a privileged memorandum by Senior Privacy Counsel Aoife Brennan dated 17 March 2025, which is withheld from the operational breach register."
+    },
+    {
+      "id": "F-BRE-17",
+      "topic": "breach",
+      "tier": "confidential",
+      "tags": [
+        "detection"
+      ],
+      "text": "The post-incident review of CONF-INC-2025-0412, dated 28 March 2025, recorded a 9-hour detection delay: the misdirected export occurred at 09:20 and was only surfaced at 18:25 when the recipient replied, because the export bypassed the Beacon alerting rules that only cover database-level access, not CSV downloads."
+    },
+    {
+      "id": "F-BRE-18",
+      "topic": "breach",
+      "tier": "confidential",
+      "tags": [
+        "roles",
+        "severity_assessment"
+      ],
+      "text": "DPO Tomás Reyes dissented from the S3 classification of CONF-INC-2025-0412, recording in writing that the 12,500-record volume and the 9-hour exposure window warranted at least a phased Article 33(4) notification to the DPC; his dissent was noted but overruled by Priya Raman, General Counsel, on 20 March 2025."
+    },
+    {
+      "id": "F-BRE-19",
+      "topic": "breach",
+      "tier": "confidential",
+      "tags": [
+        "detection",
+        "roles"
+      ],
+      "text": "CONF-RISK-07, logged in the Q2 2025 risk register, records the risk that Acme's severity matrix is systematically under-applied to export-channel breaches, with an inherent likelihood rated 'likely' and impact 'high'; risk owner is Samir Haddad with mitigation due by Q4 2025."
+    },
+    {
+      "id": "F-BRE-20",
+      "topic": "breach",
+      "tier": "confidential",
+      "tags": [
+        "detection"
+      ],
+      "text": "Board resolution CONF-BRD-2025-06-R3, approved on 12 June 2025, allocated EUR 180,000 to extend Beacon download alerting and Data Loss Prevention coverage to CSV export paths, closing the detection gap identified in CONF-INC-2025-0412; Helen Zhou, CFO, signed off the budget."
+    },
+    {
+      "id": "F-BRE-21",
+      "topic": "breach",
+      "tier": "confidential",
+      "tags": [
+        "72h_notification"
+      ],
+      "text": "Following CONF-INC-2025-0412, the Board's audit committee directed in CONF-BRD-2025-06-R3 that any breach where detection exceeds the 1-hour internal target must be escalated to the DPO and General Counsel within 24 hours of discovery, regardless of the final severity score, effective 1 September 2025."
+    },
+    {
+      "id": "F-BRE-22",
+      "topic": "breach",
+      "tier": "confidential",
+      "tags": [
+        "severity_assessment"
+      ],
+      "text": "In the confidential 2025 year-end privacy review, Priya Raman's legal team assessed Acme's exposure under Article 83(4) at up to EUR 10 million or 2% of total worldwide annual turnover for a failure to notify under Article 33, and concluded that the 9-hour delay in CONF-INC-2025-0412 would likely have required a reasoned explanation for lateness had the breach been classified notifiable."
+    },
+    {
+      "id": "F-DPI-01",
+      "topic": "dpia_ai",
+      "tier": "public",
+      "tags": [
+        "screening"
+      ],
+      "text": "Acme states on its Trust Center that it carries out data protection impact assessments (DPIAs) under Article 35 GDPR for all new products and features that are likely to result in a high risk to individuals, including its AI lead-scoring feature."
+    },
+    {
+      "id": "F-DPI-02",
+      "topic": "dpia_ai",
+      "tier": "public",
+      "tags": [
+        "ai_transparency"
+      ],
+      "text": "Acme's public privacy notice explains that Beacon's AI lead scoring assigns a predicted engagement score to sales leads, that the score is used to prioritise follow-up by human sales staff, and that no decision about an individual is made solely by automated means."
+    },
+    {
+      "id": "F-DPI-03",
+      "topic": "dpia_ai",
+      "tier": "public",
+      "tags": [
+        "human_review",
+        "ai_transparency"
+      ],
+      "text": "Acme's Trust Center states that every lead flagged by Beacon AI as 'low fit' can be reviewed by a human before any account is deprioritised or closed, and that customers can request human intervention, express a point of view, and contest outcomes, as required by Article 22(3) GDPR."
+    },
+    {
+      "id": "F-DPI-04",
+      "topic": "dpia_ai",
+      "tier": "public",
+      "tags": [
+        "dpia_process"
+      ],
+      "text": "Acme publicly commits that its DPO, Tomás Reyes, is involved in every DPIA and that customers may request a summary of the DPIA for the Beacon AI lead-scoring feature by emailing privacy@acme.example."
+    },
+    {
+      "id": "F-DPI-05",
+      "topic": "dpia_ai",
+      "tier": "public",
+      "tags": [
+        "screening",
+        "ai_transparency"
+      ],
+      "text": "Acme's public AI transparency page states that its AI features are screened against the nine criteria in WP248 rev.01 and that where two or more criteria are met, a full DPIA is completed before launch."
+    },
+    {
+      "id": "F-DPI-06",
+      "topic": "dpia_ai",
+      "tier": "public",
+      "tags": [
+        "ai_transparency"
+      ],
+      "text": "Acme's Trust Center states that the AI lead-scoring model is trained only on customer-provided CRM data and consented engagement events, and that no special-category data under Article 9 GDPR is used as a model input."
+    },
+    {
+      "id": "F-DPI-07",
+      "topic": "dpia_ai",
+      "tier": "internal",
+      "tags": [
+        "screening",
+        "dpia_process"
+      ],
+      "text": "All new processing ideas are logged in the PrivacyDesk queue INT-Q-DPIA-SCREEN and screened against the nine WP248 criteria using screening form INT-FORM-11; the screening must be completed before a feature ticket can move from design to build in the engineering workflow."
+    },
+    {
+      "id": "F-DPI-08",
+      "topic": "dpia_ai",
+      "tier": "internal",
+      "tags": [
+        "screening",
+        "dpia_process"
+      ],
+      "text": "A screening under INT-FORM-11 that scores two or more WP248 criteria as met is escalated to a full DPIA; the screening decision (DPIA required / not required) is recorded by Mara Okafor, Head of Privacy Operations, within 10 working days of the ticket entering INT-Q-DPIA-SCREEN."
+    },
+    {
+      "id": "F-DPI-09",
+      "topic": "dpia_ai",
+      "tier": "internal",
+      "tags": [
+        "dpia_process"
+      ],
+      "text": "Full DPIAs are drafted on template INT-FORM-12, which mirrors the four minimum content elements of Article 35(7) GDPR: systematic description, necessity and proportionality assessment, risk assessment, and mitigating measures."
+    },
+    {
+      "id": "F-DPI-10",
+      "topic": "dpia_ai",
+      "tier": "internal",
+      "tags": [
+        "dpia_process"
+      ],
+      "text": "Each DPIA has a named product owner and a named privacy reviewer; the DPIA for Beacon AI lead scoring (recorded as INT-DPIA-2025-07) is owned by Julia Moreau, Product Director, Beacon AI, and reviewed by Aoife Brennan, Senior Privacy Counsel."
+    },
+    {
+      "id": "F-DPI-11",
+      "topic": "dpia_ai",
+      "tier": "internal",
+      "tags": [
+        "dpia_process",
+        "risk_scoring"
+      ],
+      "text": "Residual risks in every DPIA are scored on the internal 1-5 scale in INT-FORM-12 for likelihood and severity; any residual risk scored 4 or higher on either dimension must be signed off by Tomás Reyes (DPO) before the feature can launch."
+    },
+    {
+      "id": "F-DPI-12",
+      "topic": "dpia_ai",
+      "tier": "internal",
+      "tags": [
+        "ai_transparency",
+        "risk_scoring"
+      ],
+      "text": "The Beacon AI lead-scoring screening (INT-SCREEN-2025-031) met four WP248 criteria: evaluation based on automated processing, systematic processing of personal aspects, profiling, and innovative use of technology, triggering full DPIA INT-DPIA-2025-07."
+    },
+    {
+      "id": "F-DPI-13",
+      "topic": "dpia_ai",
+      "tier": "internal",
+      "tags": [
+        "human_review",
+        "ai_transparency"
+      ],
+      "text": "The human-review safeguard for Beacon AI is implemented as a mandatory review step in the Acme Beacon sales-workflow UI: accounts scored below 30 on the 0-100 lead score cannot be auto-closed and must pass through queue INT-Q-LEAD-REVIEW, staffed by customer sales teams."
+    },
+    {
+      "id": "F-DPI-14",
+      "topic": "dpia_ai",
+      "tier": "internal",
+      "tags": [
+        "human_review"
+      ],
+      "text": "The internal SLA for INT-Q-LEAD-REVIEW is that a human reviewer acts on a flagged low-fit lead within 5 working days; the review outcome and reviewer identity are logged in Atlas for audit by Internal Audit."
+    },
+    {
+      "id": "F-DPI-15",
+      "topic": "dpia_ai",
+      "tier": "internal",
+      "tags": [
+        "dpia_process",
+        "ai_transparency"
+      ],
+      "text": "Model training and scoring runs in AWS eu-west-1 (Ireland); the DPIA INT-DPIA-2025-07 records that no personal data used by Beacon AI leaves the EEA, so no Chapter V transfer assessment was required for the scoring pipeline."
+    },
+    {
+      "id": "F-DPI-16",
+      "topic": "dpia_ai",
+      "tier": "internal",
+      "tags": [
+        "dpia_process",
+        "prior_consultation"
+      ],
+      "text": "The privacy team's internal checklist INT-CHK-DPIA-04 requires that where a DPIA shows residual high risk after mitigation, the DPO prepares a recommendation on prior consultation with the DPC under Article 36(1) GDPR within 15 working days of the DPIA sign-off."
+    },
+    {
+      "id": "F-DPI-17",
+      "topic": "dpia_ai",
+      "tier": "internal",
+      "tags": [
+        "risk_scoring",
+        "human_review"
+      ],
+      "text": "DPIA INT-DPIA-2025-07 was signed off by Tomás Reyes on 2025-09-12 with the residual Art. 22 risk scored 4 (likelihood) x 4 (severity) on the INT-FORM-12 scale, the highest residual score of any DPIA Acme has completed to date."
+    },
+    {
+      "id": "F-DPI-18",
+      "topic": "dpia_ai",
+      "tier": "internal",
+      "tags": [
+        "ai_transparency"
+      ],
+      "text": "The Beacon Settings > Privacy page includes a plain-language explanation of lead scoring for end-users whose data is processed by Acme's customers, drafted to satisfy the Article 13/14 transparency obligations identified in DPIA INT-DPIA-2025-07."
+    },
+    {
+      "id": "F-DPI-19",
+      "topic": "dpia_ai",
+      "tier": "confidential",
+      "tags": [
+        "risk_scoring",
+        "ai_transparency"
+      ],
+      "text": "CONF-RISK-07 records that the residual risk in DPIA INT-DPIA-2025-07 is HIGH under Article 35(1) GDPR because the lead score is derived by solely automated profiling and drives decisions with similarly significant effects (loss of sales follow-up, account closure), engaging Article 22(1)."
+    },
+    {
+      "id": "F-DPI-20",
+      "topic": "dpia_ai",
+      "tier": "confidential",
+      "tags": [
+        "human_review",
+        "risk_scoring"
+      ],
+      "text": "CONF-RISK-07 notes the tension with Acme's public promise of human review: the INT-Q-LEAD-REVIEW SLA of 5 working days was met for only 61% of flagged leads in Q1 2026, and in practice low-fit accounts are deprioritised by routing logic before any human sees them."
+    },
+    {
+      "id": "F-DPI-21",
+      "topic": "dpia_ai",
+      "tier": "confidential",
+      "tags": [
+        "prior_consultation",
+        "risk_scoring"
+      ],
+      "text": "As of 2026-10-01, whether to seek prior consultation with the DPC under Article 36(1) GDPR for Beacon AI lead scoring remains unresolved: DPO Tomás Reyes recommends consultation because the high residual risk cannot be fully mitigated, and no decision has been taken."
+    },
+    {
+      "id": "F-DPI-22",
+      "topic": "dpia_ai",
+      "tier": "confidential",
+      "tags": [
+        "prior_consultation"
+      ],
+      "text": "Aoife Brennan's legal memo CONF-MEMO-2026-08 (2026-08-19) advises that launching without Art. 36 consultation carries exposure under Art. 83(4) of up to EUR 10 million or 2% of total worldwide annual turnover for infringements of Art. 35-36 obligations."
+    },
+    {
+      "id": "F-DPI-23",
+      "topic": "dpia_ai",
+      "tier": "confidential",
+      "tags": [
+        "prior_consultation",
+        "risk_scoring"
+      ],
+      "text": "At the board meeting of 2026-09-15, Julia Moreau and CEO Daniel Whitfield argued that consulting the DPC would delay the Beacon AI general-availability launch by at least the eight-week Article 36(2) advice window plus a possible six-week extension, an estimated EUR 1.4 million in deferred ARR."
+    },
+    {
+      "id": "F-DPI-24",
+      "topic": "dpia_ai",
+      "tier": "confidential",
+      "tags": [
+        "prior_consultation",
+        "human_review"
+      ],
+      "text": "Board resolution CONF-BRD-2026-09-R2 deferred the Art. 36 consultation decision to General Counsel Priya Raman and the DPO, requiring them to present a mitigation plan for CONF-RISK-07 (including fixing the INT-Q-LEAD-REVIEW SLA breach) at the next board meeting in December 2026."
+    },
+    {
+      "id": "F-DPI-25",
+      "topic": "dpia_ai",
+      "tier": "confidential",
+      "tags": [
+        "risk_scoring",
+        "ai_transparency"
+      ],
+      "text": "CONF-RISK-07 records Lena Fischer's (VP Engineering) dissenting view that the routing-logic deprioritisation is technically 'solely automated' in the Article 22(1) sense and cannot be cured by the optional human-review step as currently implemented."
+    },
+    {
+      "id": "F-DPI-26",
+      "topic": "dpia_ai",
+      "tier": "confidential",
+      "tags": [
+        "dpia_process",
+        "risk_scoring"
+      ],
+      "text": "Kwame Mensah's Internal Audit review CONF-AUD-2026-05 found that 3 of the 18 DPIAs completed in 2025, including INT-DPIA-2025-07, lacked documented necessity and proportionality assessments meeting the Article 35(7)(b) standard at first sign-off."
+    },
+    {
+      "id": "F-DPI-27",
+      "topic": "dpia_ai",
+      "tier": "confidential",
+      "tags": [
+        "prior_consultation",
+        "risk_scoring"
+      ],
+      "text": "A draft communication to the DPC (CONF-DRAFT-DPC-01) prepared by Aoife Brennan in September 2026 remains unsent pending the Priya Raman / Tomás Reyes decision; the draft proposes remediation of the human-review workflow as an alternative to suspending the lead-scoring feature."
+    },
+    {
+      "id": "F-PRO-01",
+      "topic": "processors",
+      "tier": "public",
+      "tags": [
+        "dpa_terms",
+        "due_diligence"
+      ],
+      "text": "Acme's Trust Center states that every vendor and sub-processor that handles personal data is engaged only under a written data processing agreement containing the terms required by GDPR Article 28(3), including processing only on documented instructions and Art. 32 security measures."
+    },
+    {
+      "id": "F-PRO-02",
+      "topic": "processors",
+      "tier": "public",
+      "tags": [
+        "due_diligence"
+      ],
+      "text": "Acme's website privacy notice (updated 2026-03-15) lists the current categories of sub-processors, including cloud hosting in AWS eu-west-1 (Ireland) and payment processing by Stripe, and states that the full sub-processor register is available on request at privacy@acme.example."
+    },
+    {
+      "id": "F-PRO-03",
+      "topic": "processors",
+      "tier": "public",
+      "tags": [
+        "subprocessor_changes"
+      ],
+      "text": "Acme's public sub-processor policy commits to notifying customers at least 30 days before any new sub-processor is engaged or an existing one is replaced, giving customers a chance to object, consistent with Art. 28(2) general written authorisation."
+    },
+    {
+      "id": "F-PRO-04",
+      "topic": "processors",
+      "tier": "public",
+      "tags": [
+        "audit_rights",
+        "dpa_terms"
+      ],
+      "text": "Acme's standard Data Processing Agreement, published in the Trust Center, grants customers audit rights under Art. 28(3)(h), satisfied primarily by provision of independent audit reports such as ISO 27001 and SOC 2 Type II certificates, with on-site audits available where reports are insufficient."
+    },
+    {
+      "id": "F-PRO-05",
+      "topic": "processors",
+      "tier": "public",
+      "tags": [
+        "dpa_terms"
+      ],
+      "text": "Acme's DPA states that Acme remains fully liable to its customers for the performance of its sub-processors, in line with Art. 28(4), and that sub-processors are bound by obligations no less protective than those owed by Acme directly."
+    },
+    {
+      "id": "F-PRO-06",
+      "topic": "processors",
+      "tier": "public",
+      "tags": [
+        "audit_rights",
+        "ropa"
+      ],
+      "text": "Acme's Trust Center confirms that Acme maintains records of processing activities under Art. 30(1) as a controller and Art. 30(2) as a processor for Beacon, and that a summary of processing purposes is published in the privacy notice."
+    },
+    {
+      "id": "F-PRO-07",
+      "topic": "processors",
+      "tier": "internal",
+      "tags": [
+        "due_diligence",
+        "ropa"
+      ],
+      "text": "Vendor privacy due diligence is owned by Mara Okafor's Privacy Operations team and runs through intake queue INT-Q-VENDOR in PrivacyDesk; every new vendor touching personal data requires a completed screening form INT-FORM-07 (data categories, volumes, hosting regions, transfer basis) before procurement can sign."
+    },
+    {
+      "id": "F-PRO-08",
+      "topic": "processors",
+      "tier": "internal",
+      "tags": [
+        "due_diligence",
+        "dpa_terms"
+      ],
+      "text": "INT-FORM-07 screening has an internal SLA of 10 business days; vendors scoring 'high risk' (special categories, non-EU hosting without adequacy, or AI model training on customer data) are escalated to Aoife Brennan for legal review of the Art. 28(3) terms before signature."
+    },
+    {
+      "id": "F-PRO-09",
+      "topic": "processors",
+      "tier": "internal",
+      "tags": [
+        "ropa",
+        "dpa_terms"
+      ],
+      "text": "The vendor register is maintained in Atlas (table VENDORS_ROPA) and feeds the processor-side Art. 30(2) record; each entry captures vendor name, service, DPA signature date, SCC module, transfer basis, and renewal date, and Mara Okafor reconciles it quarterly against Ledger's supplier list."
+    },
+    {
+      "id": "F-PRO-10",
+      "topic": "processors",
+      "tier": "internal",
+      "tags": [
+        "subprocessor_changes"
+      ],
+      "text": "Sub-processor additions or replacements for Beacon are handled in INT-Q-SUBCH; the workflow requires DPO Tomás Reyes's sign-off, an update to the public Trust Center register, and the 30-day customer notification email template INT-TPL-12, which includes an objection contact at privacy@acme.example."
+    },
+    {
+      "id": "F-PRO-11",
+      "topic": "processors",
+      "tier": "internal",
+      "tags": [
+        "audit_rights",
+        "due_diligence"
+      ],
+      "text": "Annual vendor reassessment is run by Privacy Operations using checklist INT-CHK-04: it verifies current ISO 27001 or SOC 2 Type II reports, breach-notification clause presence (processor notifies 'without undue delay' per Art. 33(2)), and DPA expiry dates; results are stored against each Atlas VENDORS_ROPA entry."
+    },
+    {
+      "id": "F-PRO-12",
+      "topic": "processors",
+      "tier": "internal",
+      "tags": [
+        "dpa_terms",
+        "audit_rights"
+      ],
+      "text": "Customer-initiated audit requests arriving via HelpHub are triaged into INT-Q-AUDIT with a 15-business-day response SLA; Owen Gallagher's support team forwards them to Privacy Operations, which decides between supplying existing certifications and arranging a scoped on-site or remote audit under the DPA."
+    },
+    {
+      "id": "F-PRO-13",
+      "topic": "processors",
+      "tier": "internal",
+      "tags": [
+        "due_diligence",
+        "ropa"
+      ],
+      "text": "AWS (eu-west-1, Dublin) is Acme's primary hosting sub-processor for Beacon production data, and Stripe handles billing personal data; both are covered by the public Trust Center register and their Art. 28 terms are reviewed annually even where the vendor's own DPA terms are accepted wholesale."
+    },
+    {
+      "id": "F-PRO-14",
+      "topic": "processors",
+      "tier": "internal",
+      "tags": [
+        "subprocessor_changes",
+        "dpa_terms"
+      ],
+      "text": "The Beacon AI lead-scoring feature, owned by Julia Moreau, uses a model-inference vendor that was added as a sub-processor on 2025-06-12; the INT-Q-SUBCH ticket shows the 30-day notice was sent to customers on 2025-06-10 and two customers objected, both of which were resolved by data-residency commitments in eu-west-1."
+    },
+    {
+      "id": "F-PRO-15",
+      "topic": "processors",
+      "tier": "internal",
+      "tags": [
+        "audit_rights"
+      ],
+      "text": "Samir Haddad's security team performs an annual Art. 32-focused technical review of the four sub-processors with access to production personal data, checking encryption-at-rest, access logging, and backup retention against Vault's 35-day write-once standard; findings are logged in INT-Q-VENDOR."
+    },
+    {
+      "id": "F-PRO-16",
+      "topic": "processors",
+      "tier": "internal",
+      "tags": [
+        "dpa_terms",
+        "subprocessor_changes"
+      ],
+      "text": "The public promise of 30 days' notice for sub-processor changes is operationally implemented as a calendar trigger in PrivacyDesk 35 days before any planned change, giving Privacy Operations a 5-day buffer to draft the notification before the 30-day customer notice deadline."
+    },
+    {
+      "id": "F-PRO-17",
+      "topic": "processors",
+      "tier": "confidential",
+      "tags": [
+        "dpa_terms",
+        "due_diligence"
+      ],
+      "text": "Internal Audit finding CONF-AUD-2026-02, issued 2026-04-22 by Kwame Mensah, identified two long-standing vendors still operating without a fully signed Art. 28(3) DPA: a 2024-engaged email-delivery vendor and a 2023-engaged product-analytics vendor, both handling Beacon end-user personal data."
+    },
+    {
+      "id": "F-PRO-18",
+      "topic": "processors",
+      "tier": "confidential",
+      "tags": [
+        "dpa_terms",
+        "due_diligence"
+      ],
+      "text": "For the email-delivery vendor, the DPA was drafted in 2024 but signature stalled after the vendor's legal team rejected Acme's audit clause; for the analytics vendor, a 2023 order form referenced 'DPA to follow' and no Art. 28 contract was ever executed, though the vendor signed SCCs in 2025."
+    },
+    {
+      "id": "F-PRO-19",
+      "topic": "processors",
+      "tier": "confidential",
+      "tags": [
+        "dpa_terms",
+        "audit_rights"
+      ],
+      "text": "Aoife Brennan's legal analysis in CONF-AUD-2026-02 assessed the exposure as an infringement of Art. 28(1) and 28(3) carrying a fine band under Art. 83(4) of up to EUR 10 million or 2% of worldwide turnover, and noted that Acme's public Trust Center statement that 'every vendor has a signed DPA' was inaccurate for these two vendors."
+    },
+    {
+      "id": "F-PRO-20",
+      "topic": "processors",
+      "tier": "confidential",
+      "tags": [
+        "dpa_terms",
+        "subprocessor_changes"
+      ],
+      "text": "Board resolution CONF-BRD-2026-06-R3, passed 2026-06-18 and sponsored by CEO Daniel Whitfield, directed that both vendors be brought under fully signed Art. 28(3) DPAs by 2026-09-30 or be terminated, with CFO Helen Zhou authorised to approve up to EUR 40,000 in additional vendor fees to secure the audit and breach-notification clauses."
+    },
+    {
+      "id": "F-PRO-21",
+      "topic": "processors",
+      "tier": "confidential",
+      "tags": [
+        "dpa_terms",
+        "due_diligence"
+      ],
+      "text": "As of 2026-09-25, the email-delivery vendor had signed Acme's standard DPA with a negotiated 5-business-day breach-notification commitment (stricter than the 'without undue delay' Art. 33(2) baseline), while the analytics vendor had agreed terms but signature remained pending, missing the CONF-BRD-2026-06-R3 deadline by at least 5 days."
+    },
+    {
+      "id": "F-PRO-22",
+      "topic": "processors",
+      "tier": "confidential",
+      "tags": [
+        "audit_rights",
+        "due_diligence"
+      ],
+      "text": "CONF-RISK-11, logged in the risk register on 2026-05-04, rates the unsigned-DPA exposure as 'high' before remediation and notes that the DPC could learn of the gap through a customer complaint under Art. 77, which would count against Acme under the Art. 83(2) factors."
+    },
+    {
+      "id": "F-PRO-23",
+      "topic": "processors",
+      "tier": "confidential",
+      "tags": [
+        "ropa",
+        "dpa_terms"
+      ],
+      "text": "Priya Raman directed in CONF-MEMO-2026-05 that the Atlas VENDORS_ROPA register be corrected to add a 'DPA status' field with values signed/pending/absent, after it was found that quarterly reconciliations had tracked contract renewal dates but never verified that an Art. 28 DPA was actually executed."
+    },
+    {
+      "id": "F-PRO-24",
+      "topic": "processors",
+      "tier": "confidential",
+      "tags": [
+        "due_diligence",
+        "subprocessor_changes"
+      ],
+      "text": "CONF-AUD-2026-02 also found that the Beacon AI inference vendor added in 2025 went live 3 days before the 30-day customer objection window closed, contradicting the public sub-processor policy; Margaret Ellison was briefed on 2026-05-12 and requested a quarterly vendor-compliance report to the Audit Committee."
+    },
+    {
+      "id": "F-PRO-25",
+      "topic": "processors",
+      "tier": "confidential",
+      "tags": [
+        "dpa_terms",
+        "audit_rights"
+      ],
+      "text": "DPO Tomás Reyes recorded in CONF-LOG-2026-06 that he had raised the two unsigned DPAs verbally with Lena Fischer (VP Engineering, whose teams owned the vendor relationships) in October 2025 and January 2026 before escalating to Internal Audit, and that the delay in escalation was itself noted as a governance weakness by the Audit Committee."
+    },
+    {
+      "id": "F-TRA-01",
+      "topic": "transfers",
+      "tier": "public",
+      "tags": [
+        "mechanisms"
+      ],
+      "text": "Acme Corp Ltd's privacy notice (version dated 2026-03-15) states that personal data is transferred outside the EEA only where an adequacy decision applies under GDPR Art. 45 (including the EU-US Data Privacy Framework for US recipients) or where appropriate safeguards under Art. 46(2)(c) standard contractual clauses are in place."
+    },
+    {
+      "id": "F-TRA-02",
+      "topic": "transfers",
+      "tier": "public",
+      "tags": [
+        "mechanisms"
+      ],
+      "text": "The Acme trust center page (updated 2026-06-02) states that EU customer data in the Acme Beacon platform is hosted on AWS infrastructure in the eu-west-1 region (Ireland) and is not stored in the United States for primary processing."
+    },
+    {
+      "id": "F-TRA-03",
+      "topic": "transfers",
+      "tier": "public",
+      "tags": [
+        "us_parent_access"
+      ],
+      "text": "Acme's privacy notice discloses that its US parent company, Acme Corp Inc. (Austin, Texas), may access limited personal data for group administration and product support purposes, and that such transfers are covered by the EU-US Data Privacy Framework or standard contractual clauses."
+    },
+    {
+      "id": "F-TRA-04",
+      "topic": "transfers",
+      "tier": "public",
+      "tags": [
+        "mechanisms",
+        "vendor_specific"
+      ],
+      "text": "Acme's website states that a current list of sub-processors and the countries where they process personal data is available on request via privacy@acme.example, and that customers are notified of changes to sub-processors in advance."
+    },
+    {
+      "id": "F-TRA-05",
+      "topic": "transfers",
+      "tier": "public",
+      "tags": [
+        "tia"
+      ],
+      "text": "Acme's trust center states that, following the CJEU Schrems II judgment, Acme carries out transfer impact assessments for transfers relying on standard contractual clauses and adds supplementary measures where required."
+    },
+    {
+      "id": "F-TRA-06",
+      "topic": "transfers",
+      "tier": "internal",
+      "tags": [
+        "mechanisms"
+      ],
+      "text": "Privacy Operations, led by Mara Okafor, maintains the transfer register INT-REG-XFER-01 in Atlas, which lists 11 outbound transfer routes outside the EEA as of 2026-09-15, each mapped to its legal mechanism (Art. 45 adequacy, Art. 46(2)(c) SCCs module, or Art. 49 derogation)."
+    },
+    {
+      "id": "F-TRA-07",
+      "topic": "transfers",
+      "tier": "internal",
+      "tags": [
+        "us_parent_access"
+      ],
+      "text": "Parent-company access by Acme Corp Inc. staff in Austin is routed through the ticket queue INT-Q-PARENT-ACCESS; access is logged in Atlas and requires a named business justification, with the DPO Tomás Reyes reviewing the log monthly."
+    },
+    {
+      "id": "F-TRA-08",
+      "topic": "transfers",
+      "tier": "internal",
+      "tags": [
+        "vendor_specific",
+        "mechanisms"
+      ],
+      "text": "The product-analytics vendor 'MetricPulse Inc.' (US) processes Beacon end-user event data under 2021 EU Commission standard contractual clauses (module two, controller-to-processor), with data hosted on AWS us-east-1; the vendor is certified under the EU-US Data Privacy Framework since 2024-02-10."
+    },
+    {
+      "id": "F-TRA-09",
+      "topic": "transfers",
+      "tier": "internal",
+      "tags": [
+        "tia"
+      ],
+      "text": "The TIA template INT-FORM-TIA-07, owned by Aoife Brennan's legal team, must be completed before any new non-EEA vendor goes live; the internal SLA is TIA completion within 15 business days of vendor onboarding start, stricter than the GDPR, which sets no fixed TIA deadline."
+    },
+    {
+      "id": "F-TRA-10",
+      "topic": "transfers",
+      "tier": "internal",
+      "tags": [
+        "supplementary_measures"
+      ],
+      "text": "Standard supplementary measures applied to US transfers are listed in INT-FORM-TIA-07: TLS 1.3 in transit, AES-256 at rest, pseudonymisation of end-user identifiers before export to Atlas replicas, and a documented government-access challenge commitment from the vendor."
+    },
+    {
+      "id": "F-TRA-11",
+      "topic": "transfers",
+      "tier": "internal",
+      "tags": [
+        "vendor_specific",
+        "supplementary_measures"
+      ],
+      "text": "The TIA for MetricPulse Inc., recorded as INT-TIA-2025-114 and signed off 2025-08-22 by Mara Okafor, scored the destination-law risk as 'medium' after supplementary measures, with one open remediation item: encryption keys must be held solely in eu-west-1 by Acme, not by the vendor."
+    },
+    {
+      "id": "F-TRA-12",
+      "topic": "transfers",
+      "tier": "internal",
+      "tags": [
+        "mechanisms"
+      ],
+      "text": "Stripe is used for billing via Ledger; EU cardholder data is processed under Stripe's SCC-based transfer framework with tokenisation applied before any non-EEA processing, and no raw card numbers leave the EEA."
+    },
+    {
+      "id": "F-TRA-13",
+      "topic": "transfers",
+      "tier": "internal",
+      "tags": [
+        "us_parent_access"
+      ],
+      "text": "The Beacon AI lead-scoring feature, directed by Julia Moreau, sends pseudonymised feature vectors (not raw customer records) to Acme Corp Inc. in Austin for model training; the flow is documented in RoPA entry INT-ROPA-22 and relies on SCCs module one (controller-to-controller)."
+    },
+    {
+      "id": "F-TRA-14",
+      "topic": "transfers",
+      "tier": "internal",
+      "tags": [
+        "tia"
+      ],
+      "text": "Mara Okafor runs a quarterly TIA review cycle; the 2026-Q3 review on 2026-09-05 re-approved 10 of the 11 transfer routes and flagged INT-TIA-2025-114 (MetricPulse) as requiring re-assessment before 2026-12-31."
+    },
+    {
+      "id": "F-TRA-15",
+      "topic": "transfers",
+      "tier": "internal",
+      "tags": [
+        "supplementary_measures"
+      ],
+      "text": "Vault backups (35-day retention, write-once) remain exclusively in eu-west-1; the internal checklist INT-CHK-09 confirms no Vault backup is replicated outside the EEA, so no Chapter V transfer applies to backups."
+    },
+    {
+      "id": "F-TRA-16",
+      "topic": "transfers",
+      "tier": "confidential",
+      "tags": [
+        "tia",
+        "vendor_specific"
+      ],
+      "text": "The re-assessment of INT-TIA-2025-114 (CONF-TIA-REVIEW-2026-09) concluded the MetricPulse TIA is borderline: the vendor's DPF certification does not cover the specific analytics sub-processing it performs, so the transfer relies on SCCs alone, and the key-holding supplementary measure is not yet contractually enforceable."
+    },
+    {
+      "id": "F-TRA-17",
+      "topic": "transfers",
+      "tier": "confidential",
+      "tags": [
+        "vendor_specific",
+        "supplementary_measures"
+      ],
+      "text": "Remediation of the MetricPulse gap depends on a contract amendment (CONF-AMEND-2026-08) requiring EU-only key custody and a transparency commitment on government access requests; MetricPulse has verbally agreed but as of 2026-09-28 has not countersigned, and Acme's fallback is to route analytics through an EU proxy."
+    },
+    {
+      "id": "F-TRA-18",
+      "topic": "transfers",
+      "tier": "confidential",
+      "tags": [
+        "tia",
+        "us_parent_access"
+      ],
+      "text": "Aoife Brennan's legal memo CONF-MEMO-2026-09-14 warns that the Beacon AI training flow to Austin (INT-ROPA-22) would be unlawful if the MetricPulse amendment fails, because the pseudonymisation keys are stored in the same US analytics stack, weakening the supplementary-measures argument."
+    },
+    {
+      "id": "F-TRA-19",
+      "topic": "transfers",
+      "tier": "confidential",
+      "tags": [
+        "tia",
+        "mechanisms"
+      ],
+      "text": "Board resolution CONF-BRD-2026-06-R3, approved 2026-06-19 on the recommendation of Priya Raman and Daniel Whitfield, authorises continued use of MetricPulse for a maximum of six months (until 2026-12-31) on condition that the contract amendment is executed, and sets a EUR 250,000 budget for an EU-based analytics replacement if it is not."
+    },
+    {
+      "id": "F-TRA-20",
+      "topic": "transfers",
+      "tier": "confidential",
+      "tags": [
+        "tia",
+        "supplementary_measures"
+      ],
+      "text": "Samir Haddad dissented in the CONF-BRD-2026-06-R3 discussion, recording in CONF-RISK-07 that an Art. 44-49 infringement carries exposure under Art. 83(5) of up to EUR 20 million or 4% of worldwide turnover, and that he rated the residual risk of the current MetricPulse arrangement as 'high' rather than the legal team's 'medium'."
+    },
+    {
+      "id": "F-TRA-21",
+      "topic": "transfers",
+      "tier": "confidential",
+      "tags": [
+        "vendor_specific"
+      ],
+      "text": "Helen Zhou has approved a EUR 250,000 contingency (CONF-BUDGET-2026-Q4) for the EU analytics replacement vendor evaluation, with Lena Fischer's engineering team to deliver a technical feasibility report by 2026-11-15."
+    },
+    {
+      "id": "F-TRA-22",
+      "topic": "transfers",
+      "tier": "confidential",
+      "tags": [
+        "us_parent_access",
+        "tia"
+      ],
+      "text": "A customer complaint lodged with the Irish DPC on 2026-08-30 (CONF-DPC-2026-COMP-041) questions Acme's US parent-access disclosures; Kwame Mensah's internal audit, CONF-AUDIT-2026-09, found the public sub-processor list omits two US-based group entities, and a corrected trust-center page is scheduled for publication by 2026-10-31."
+    },
+    {
+      "id": "F-RET-01",
+      "topic": "retention",
+      "tier": "public",
+      "tags": [
+        "schedule"
+      ],
+      "text": "Acme's privacy notice states that customer account data is deleted within 30 days after account closure, in line with the GDPR storage limitation principle (Art. 5(1)(e))."
+    },
+    {
+      "id": "F-RET-02",
+      "topic": "retention",
+      "tier": "public",
+      "tags": [
+        "schedule",
+        "billing_records"
+      ],
+      "text": "Acme's public retention summary states that billing and invoicing records are kept for 6 years to meet Irish tax law, after which they are deleted."
+    },
+    {
+      "id": "F-RET-03",
+      "topic": "retention",
+      "tier": "public",
+      "tags": [
+        "schedule",
+        "backups"
+      ],
+      "text": "Acme's trust center page states that backups are retained for 35 days and that data deleted at a customer's request is not restored from backup."
+    },
+    {
+      "id": "F-RET-04",
+      "topic": "retention",
+      "tier": "public",
+      "tags": [
+        "schedule",
+        "exceptions"
+      ],
+      "text": "Acme's privacy notice states that where a legal hold or legal obligation (such as defence of legal claims under Art. 17(3)(e)) applies, data may be retained longer, and the reason is documented."
+    },
+    {
+      "id": "F-RET-05",
+      "topic": "retention",
+      "tier": "public",
+      "tags": [
+        "schedule"
+      ],
+      "text": "Acme's privacy notice says customers can request erasure of their personal data via privacy@acme.example or through Beacon Settings > Privacy, and that requests are handled without undue delay as required by Art. 17(1) GDPR."
+    },
+    {
+      "id": "F-RET-06",
+      "topic": "retention",
+      "tier": "internal",
+      "tags": [
+        "deletion_jobs"
+      ],
+      "text": "Deletion enforcement is owned by the Privacy Operations team led by Mara Okafor; automated deletion jobs run nightly in Atlas and weekly against Beacon production databases, tracked as INT-JOB-DEL-01 and INT-JOB-DEL-02."
+    },
+    {
+      "id": "F-RET-07",
+      "topic": "retention",
+      "tier": "internal",
+      "tags": [
+        "deletion_jobs",
+        "schedule"
+      ],
+      "text": "Internal target for completing erasure requests is 21 days from receipt, stricter than the one-month statutory deadline in Art. 12(3); requests are logged in the PrivacyDesk queue INT-Q-ERASE."
+    },
+    {
+      "id": "F-RET-08",
+      "topic": "retention",
+      "tier": "internal",
+      "tags": [
+        "schedule"
+      ],
+      "text": "Atlas actually retains event history for up to 24 months after account closure, not the 30 days stated publicly; the discrepancy is documented in the internal retention register INT-REG-RET v3.2, owned by Mara Okafor."
+    },
+    {
+      "id": "F-RET-09",
+      "topic": "retention",
+      "tier": "internal",
+      "tags": [
+        "billing_records",
+        "schedule"
+      ],
+      "text": "Ledger billing records follow the 6-year Irish tax retention rule; after 6 years the deletion job INT-JOB-LEDGER-PURGE removes invoice line items but keeps anonymised totals for financial reporting."
+    },
+    {
+      "id": "F-RET-10",
+      "topic": "retention",
+      "tier": "internal",
+      "tags": [
+        "backups",
+        "deletion_jobs"
+      ],
+      "text": "Vault backups are write-once with a fixed 35-day retention; erasure requests are recorded in a suppression list (INT-FORM-07) so suppressed records are never restored to production, and Vault ages out naturally without manual deletion."
+    },
+    {
+      "id": "F-RET-11",
+      "topic": "retention",
+      "tier": "internal",
+      "tags": [
+        "legal_hold",
+        "exceptions"
+      ],
+      "text": "Legal holds are requested by Aoife Brennan's legal team via INT-FORM-12 and applied in Atlas and Ledger within 5 business days; a hold overrides all deletion jobs and is reviewed every 6 months."
+    },
+    {
+      "id": "F-RET-12",
+      "topic": "retention",
+      "tier": "internal",
+      "tags": [
+        "exceptions",
+        "deletion_jobs"
+      ],
+      "text": "Exceptions to the retention schedule (e.g. open support tickets in HelpHub, active disputes, or fraud investigations) require sign-off from the DPO Tomás Reyes and are logged in the exception register INT-REG-EXC."
+    },
+    {
+      "id": "F-RET-13",
+      "topic": "retention",
+      "tier": "internal",
+      "tags": [
+        "schedule"
+      ],
+      "text": "The record of processing activities under Art. 30(1), maintained in INT-REG-ROPA by Mara Okafor, lists retention periods per data category for all 14 processing activities; Acme cannot use the small-enterprise exemption under Art. 30(5) because processing is not occasional."
+    },
+    {
+      "id": "F-RET-14",
+      "topic": "retention",
+      "tier": "internal",
+      "tags": [
+        "deletion_jobs",
+        "backups"
+      ],
+      "text": "Quarterly retention compliance checks are performed by Kwame Mensah's Internal Audit team: a sample of 50 closed accounts is tested against INT-REG-RET; the Q2 2026 check found 9 of 50 accounts still had Atlas event rows past schedule."
+    },
+    {
+      "id": "F-RET-15",
+      "topic": "retention",
+      "tier": "confidential",
+      "tags": [
+        "legal_hold",
+        "schedule"
+      ],
+      "text": "CONF-RISK-07 (opened 2025-11-14, risk register): the gap between the public 30-day deletion promise and Atlas's 24-month event-history retention is an Art. 5(1)(e) storage-limitation and Art. 5(2) accountability exposure, assessed by Aoife Brennan as material."
+    },
+    {
+      "id": "F-RET-16",
+      "topic": "retention",
+      "tier": "confidential",
+      "tags": [
+        "schedule"
+      ],
+      "text": "At the board risk committee on 2026-03-19 (CONF-BRD-2026-03-R2), Priya Raman advised that the 24-month Atlas retention was originally justified by product analytics needs but lacks a documented necessity assessment; the committee deferred a decision pending legal review."
+    },
+    {
+      "id": "F-RET-17",
+      "topic": "retention",
+      "tier": "confidential",
+      "tags": [
+        "schedule",
+        "exceptions"
+      ],
+      "text": "CONF-BRD-2026-06-R3 (board resolution, 2026-06-11): CEO Daniel Whitfield and CFO Helen Zhou proposed extending Atlas event-history retention from 24 to 36 months to support the Beacon AI lead-scoring model; Priya Raman and DPO Tomás Reyes objected that this would widen the gap with the published 30-day schedule."
+    },
+    {
+      "id": "F-RET-18",
+      "topic": "retention",
+      "tier": "confidential",
+      "tags": [
+        "schedule",
+        "legal_hold"
+      ],
+      "text": "CONF-BRD-2026-06-R3 outcome: the board rejected the 36-month extension and instead approved a 90-day remediation plan to cut Atlas event-history retention to 12 months and align the public privacy notice with actual practice; Lena Fischer's engineering team owns delivery by 2026-12-31."
+    },
+    {
+      "id": "F-RET-19",
+      "topic": "retention",
+      "tier": "confidential",
+      "tags": [
+        "exceptions",
+        "legal_hold"
+      ],
+      "text": "CONF-INC-2025-0412: in April 2025 an Internal Audit test found that the legal-hold process had failed for 3 ex-employee records, which were deleted on schedule despite active litigation holds; Aoife Brennan assessed it as a self-detected Art. 5(2) documentation gap, no notification to the DPC was made."
+    },
+    {
+      "id": "F-RET-20",
+      "topic": "retention",
+      "tier": "confidential",
+      "tags": [
+        "backups",
+        "legal_hold"
+      ],
+      "text": "CONF-RISK-07 mitigation analysis notes that Vault's 35-day backup window means erasure cannot be fully realised for up to 35 days; Aoife Brennan advised this is defensible under Art. 17 as disproportionate effort, but only if the suppression list INT-FORM-07 is applied without exception — which failed in CONF-INC-2025-0412."
+    },
+    {
+      "id": "F-RET-21",
+      "topic": "retention",
+      "tier": "confidential",
+      "tags": [
+        "schedule"
+      ],
+      "text": "CONF-EST-2026-08: Priya Raman's legal memo of 2026-08-04 estimates the maximum exposure if the DPC pursued the retention gap as an Art. 5 infringement at up to EUR 20 million or 4% of worldwide turnover under Art. 83(5), and recommends against voluntary self-report until remediation completes."
+    },
+    {
+      "id": "F-CON-01",
+      "topic": "consent",
+      "tier": "public",
+      "tags": [
+        "marketing_preferences",
+        "withdrawal"
+      ],
+      "text": "Acme sends direct marketing emails only on the basis of your consent under Art. 6(1)(a) GDPR, and you may withdraw consent at any time via the marketing preferences page; withdrawal is as easy as giving consent (Art. 7(3))."
+    },
+    {
+      "id": "F-CON-02",
+      "topic": "consent",
+      "tier": "public",
+      "tags": [
+        "cookies"
+      ],
+      "text": "Acme's website sets non-essential analytics and marketing cookies only after you have given consent through the cookie banner; strictly necessary cookies are set without consent."
+    },
+    {
+      "id": "F-CON-03",
+      "topic": "consent",
+      "tier": "public",
+      "tags": [
+        "lia"
+      ],
+      "text": "Acme processes pseudonymised product-usage analytics for its own website on the basis of legitimate interests under Art. 6(1)(f) GDPR, and you can object at any time using the opt-out link in Acme's privacy notice."
+    },
+    {
+      "id": "F-CON-04",
+      "topic": "consent",
+      "tier": "public",
+      "tags": [
+        "marketing_preferences"
+      ],
+      "text": "Service and transactional emails about your Acme Beacon account are sent on the basis of contract performance under Art. 6(1)(b) GDPR and are not marketing."
+    },
+    {
+      "id": "F-CON-05",
+      "topic": "consent",
+      "tier": "public",
+      "tags": [
+        "records_of_consent"
+      ],
+      "text": "Acme keeps a record of when and how each consent was given, including the consent text version shown, so it can demonstrate compliance with Art. 5(2) GDPR."
+    },
+    {
+      "id": "F-CON-06",
+      "topic": "consent",
+      "tier": "public",
+      "tags": [
+        "withdrawal",
+        "marketing_preferences"
+      ],
+      "text": "You have an absolute right to object to direct marketing at any time under Art. 21(2)-(3) GDPR; when you object, Acme stops that processing."
+    },
+    {
+      "id": "F-CON-07",
+      "topic": "consent",
+      "tier": "internal",
+      "tags": [
+        "withdrawal",
+        "records_of_consent"
+      ],
+      "text": "Consent withdrawals, objections and cookie complaints are triaged in the PrivacyDesk queue INT-Q-CONSENT, with an internal SLA of 5 business days — stricter than the one-month deadline in Art. 12(3) GDPR."
+    },
+    {
+      "id": "F-CON-08",
+      "topic": "consent",
+      "tier": "internal",
+      "tags": [
+        "records_of_consent"
+      ],
+      "text": "Every consent event (timestamp, channel, consent-string version, and IP at collection) is written to the consent_events table in Atlas; records are retained for 3 years after withdrawal to satisfy Art. 5(2) accountability."
+    },
+    {
+      "id": "F-CON-09",
+      "topic": "consent",
+      "tier": "internal",
+      "tags": [
+        "cookies"
+      ],
+      "text": "The cookie banner is served by the internal consent-management module CMP v3; it blocks analytics and marketing tags until a positive action, and each banner interaction is logged to Atlas."
+    },
+    {
+      "id": "F-CON-10",
+      "topic": "consent",
+      "tier": "internal",
+      "tags": [
+        "marketing_preferences",
+        "withdrawal"
+      ],
+      "text": "Withdrawn or objected contacts are added to the suppression list in the campaign system; the suppression list syncs from Atlas every 6 hours, and INT-Q-CONSENT checks same-day suppression for Art. 21(2) objections."
+    },
+    {
+      "id": "F-CON-11",
+      "topic": "consent",
+      "tier": "internal",
+      "tags": [
+        "lia",
+        "records_of_consent"
+      ],
+      "text": "The legitimate-interests assessment for Acme's own product-usage analytics is documented on form INT-FORM-07, owned by Mara Okafor, Head of Privacy Operations, and reviewed annually against EDPB Guidelines 01/2024."
+    },
+    {
+      "id": "F-CON-12",
+      "topic": "consent",
+      "tier": "internal",
+      "tags": [
+        "withdrawal"
+      ],
+      "text": "Consent withdrawals submitted through the marketing preferences page or privacy@acme.example are processed using INT-FORM-03; the requester receives confirmation within 48 hours and full closure within the 5-business-day SLA."
+    },
+    {
+      "id": "F-CON-13",
+      "topic": "consent",
+      "tier": "internal",
+      "tags": [
+        "marketing_preferences",
+        "records_of_consent"
+      ],
+      "text": "Before any campaign launch, the marketing team must complete checklist INT-CKL-02, confirming a valid consent record exists in Atlas for every recipient address; campaigns cannot be scheduled without a passing checklist."
+    },
+    {
+      "id": "F-CON-14",
+      "topic": "consent",
+      "tier": "internal",
+      "tags": [
+        "cookies"
+      ],
+      "text": "CMP v3 replaced the legacy banner in the January 2026 website redesign; the legacy banner logged consent but rendered the analytics opt-out only as a footer link on the privacy notice."
+    },
+    {
+      "id": "F-CON-15",
+      "topic": "consent",
+      "tier": "internal",
+      "tags": [
+        "lia"
+      ],
+      "text": "Product-usage analytics for Beacon customers' end-user data are processed by Acme as processor under the customer's documented instructions, so the lawful basis is determined by each customer controller, not by Acme."
+    },
+    {
+      "id": "F-CON-16",
+      "topic": "consent",
+      "tier": "confidential",
+      "tags": [
+        "lia"
+      ],
+      "text": "CONF-RISK-07: the 2024-2025 legitimate-interests assessment for product-usage analytics relied on an opt-out mechanism buried in the privacy-notice footer, which Aoife Brennan assessed in a 2025-11 memo as failing the 'same prominence' expectation of EDPB Guidelines 01/2024, making the Art. 6(1)(f) basis arguably invalid for that period."
+    },
+    {
+      "id": "F-CON-17",
+      "topic": "consent",
+      "tier": "confidential",
+      "tags": [
+        "lia"
+      ],
+      "text": "CONF-AUD-2025-11: internal audit under Kwame Mensah found that only 3% of website visitors ever scrolled to the footer opt-out link before the 2026 redesign, and recommended treating pre-2026 analytics processing as a compliance gap."
+    },
+    {
+      "id": "F-CON-18",
+      "topic": "consent",
+      "tier": "confidential",
+      "tags": [
+        "lia",
+        "cookies"
+      ],
+      "text": "CONF-BRD-2026-06-R3: the board approved EUR 180,000 for the January 2026 consent-experience redesign, making the analytics opt-out a first-level toggle in the cookie banner, and directed a re-run of INT-FORM-07 before the 2026 annual review."
+    },
+    {
+      "id": "F-CON-19",
+      "topic": "consent",
+      "tier": "confidential",
+      "tags": [
+        "lia"
+      ],
+      "text": "In the CONF-BRD-2026-06-R3 debate, Priya Raman recommended against proactively notifying the Irish DPC about the pre-2026 opt-out gap given remediation was complete; DPO Tomás Reyes dissented, arguing for voluntary disclosure under Art. 38's independent-advice role, and his dissent was minuted."
+    },
+    {
+      "id": "F-CON-20",
+      "topic": "consent",
+      "tier": "confidential",
+      "tags": [
+        "records_of_consent"
+      ],
+      "text": "CONF-INC-2025-0314: a 2024 Q2 data migration dropped approximately 40,000 consent records from the Atlas consent_events table; the gap was discovered on 2025-02-20 and backfilled from Vault backups by 2025-03-14, but 3,100 records were unrecoverable and those contacts were suppressed from marketing as a precaution."
+    },
+    {
+      "id": "F-CON-21",
+      "topic": "consent",
+      "tier": "confidential",
+      "tags": [
+        "cookies"
+      ],
+      "text": "CONF-DPC-2026-02: the Irish DPC sent an inquiry on 2026-04-08 following a complaint that the legacy banner fired analytics cookies before consent was captured on page load; Acme submitted CMP v3 evidence and the DPC closed the inquiry with no enforcement action on 2026-08-19."
+    },
+    {
+      "id": "F-CON-22",
+      "topic": "consent",
+      "tier": "confidential",
+      "tags": [
+        "lia"
+      ],
+      "text": "CFO Helen Zhou quantified the worst-case exposure from CONF-RISK-07 as an Art. 83(5) fine of up to EUR 20 million or 4% of total worldwide annual turnover for an Art. 6 principles infringement, which she presented as a low-probability scenario given remediation and the pseudonymised nature of the analytics data."
+    },
+    {
+      "id": "F-CON-23",
+      "topic": "consent",
+      "tier": "confidential",
+      "tags": [
+        "withdrawal",
+        "marketing_preferences"
+      ],
+      "text": "CONF-RISK-11: between 2024-01 and 2024-09 the suppression-list sync ran weekly rather than every 6 hours, meaning withdrawn contacts could receive marketing for up to 7 days after withdrawal; legal assessed this as a technical Art. 7(3) friction issue rather than a reportable breach, and the sync frequency was raised in 2024-10."
+    },
+    {
+      "id": "F-CON-24",
+      "topic": "consent",
+      "tier": "confidential",
+      "tags": [
+        "records_of_consent",
+        "marketing_preferences"
+      ],
+      "text": "CONF-BRD-2025-09-R1: the board approved a directive that no marketing campaign may run against any address lacking a verifiable Atlas consent record, after the CONF-INC-2025-0314 discovery showed the 2024 migration had weakened the Art. 5(2) audit trail."
+    },
+    {
+      "id": "F-GOV-01",
+      "topic": "governance",
+      "tier": "public",
+      "tags": [
+        "dpo"
+      ],
+      "text": "Acme Corp Ltd has appointed Tomás Reyes as Data Protection Officer, contactable at privacy@acme.example, who reports directly to the highest management level as required by Article 38(3) GDPR."
+    },
+    {
+      "id": "F-GOV-02",
+      "topic": "governance",
+      "tier": "public",
+      "tags": [
+        "dpo",
+        "raci"
+      ],
+      "text": "Acme's privacy notice, last updated 2026-03-15, states that Acme Corp Ltd is the controller for its own customers' account data, employee data, website visitor data and marketing data, and acts as processor for its customers' end-user data stored in Acme Beacon."
+    },
+    {
+      "id": "F-GOV-03",
+      "topic": "governance",
+      "tier": "public",
+      "tags": [
+        "training",
+        "privacy_by_design"
+      ],
+      "text": "Acme's trust center states that all employees complete annual privacy and data protection training and that new products and features undergo data protection by design and by default reviews in line with Article 25 GDPR and EDPB Guidelines 04/2019 before launch."
+    },
+    {
+      "id": "F-GOV-04",
+      "topic": "governance",
+      "tier": "public",
+      "tags": [
+        "dpo",
+        "risk_register"
+      ],
+      "text": "Acme's trust center, updated 2026-06-01, commits the company to operating a documented privacy risk management programme with regular risk reviews, and to maintaining records of processing activities under Article 30 GDPR."
+    },
+    {
+      "id": "F-GOV-05",
+      "topic": "governance",
+      "tier": "public",
+      "tags": [
+        "training"
+      ],
+      "text": "Acme's website states that its DPO is involved at an early stage in all data protection impact assessments and cooperates with the Irish Data Protection Commission as Acme's lead supervisory authority."
+    },
+    {
+      "id": "F-GOV-06",
+      "topic": "governance",
+      "tier": "public",
+      "tags": [
+        "privacy_by_design"
+      ],
+      "text": "Acme's public DPA, version 4.2 published 2025-09-20, promises that any personal data breach affecting customer data will be notified to affected customers without undue delay and, in any event, within 48 hours of Acme becoming aware of it."
+    },
+    {
+      "id": "F-GOV-07",
+      "topic": "governance",
+      "tier": "internal",
+      "tags": [
+        "dpo",
+        "raci"
+      ],
+      "text": "The privacy governance RACI is documented in the Privacy Governance Charter (INT-CHARTER-01, v3, 2026-01-12): Tomás Reyes (DPO) is accountable for GDPR compliance advice and DSR oversight; Mara Okafor (Head of Privacy Operations) owns day-to-day DSR operations and the PrivacyDesk queue INT-Q-DSR; Aoife Brennan (Senior Privacy Counsel) owns DPA and RoPA maintenance; Samir Haddad (CISO) owns Art. 32 security measures; Lena Fischer (VP Engineering) is responsible for privacy-by-design implementation in Beacon."
+    },
+    {
+      "id": "F-GOV-08",
+      "topic": "governance",
+      "tier": "internal",
+      "tags": [
+        "training"
+      ],
+      "text": "Annual privacy training is run through the Learning Hub course INT-COURSE-PRIV-101; completion is tracked by Kwame Mensah's Internal Audit team with a target of 100% completion within 30 days of assignment, and 96% completion was achieved in the 2025 cycle (deadline 2025-12-15)."
+    },
+    {
+      "id": "F-GOV-09",
+      "topic": "governance",
+      "tier": "internal",
+      "tags": [
+        "privacy_by_design"
+      ],
+      "text": "Every Beacon feature that processes personal data requires a completed privacy review form INT-FORM-07, signed by the DPO or Mara Okafor, before code freeze; the AI lead-scoring feature owned by Julia Moreau additionally requires a DPIA per Art. 35(3)(a) because it evaluates personal aspects based on automated processing."
+    },
+    {
+      "id": "F-GOV-10",
+      "topic": "governance",
+      "tier": "internal",
+      "tags": [
+        "risk_register"
+      ],
+      "text": "The privacy risk register is maintained in the GRC tool (register ID INT-RISK-REG) by Mara Okafor, reviewed monthly by the Privacy Steering Group (DPO, CISO, Privacy Counsel, VP Engineering), with each risk scored on likelihood x impact and assigned a named mitigation owner."
+    },
+    {
+      "id": "F-GOV-11",
+      "topic": "governance",
+      "tier": "internal",
+      "tags": [
+        "dpo",
+        "raci"
+      ],
+      "text": "The Privacy Steering Group meets on the first Tuesday of each month; minutes are filed in the shared drive folder INT-FOLDER-PSG and the DPO presents a quarterly compliance report to the CEO, Daniel Whitfield, per the Art. 38(3) direct-reporting line documented in INT-CHARTER-01."
+    },
+    {
+      "id": "F-GOV-12",
+      "topic": "governance",
+      "tier": "internal",
+      "tags": [
+        "classification"
+      ],
+      "text": "All internal documents are classified into three tiers (public, internal, confidential) per the Data Classification Policy INT-POL-CLASS-02, dated 2025-04-10; RoPA extracts and DSR tickets are internal tier, while DPIAs and regulator correspondence are confidential tier."
+    },
+    {
+      "id": "F-GOV-13",
+      "topic": "governance",
+      "tier": "internal",
+      "tags": [
+        "training"
+      ],
+      "text": "Role-based training goes beyond the annual course: engineers complete INT-COURSE-ENG-210 on privacy-by-design and data minimisation within 60 days of joining, and support agents in Owen Gallagher's team complete INT-COURSE-SUP-115 on handling DSRs received via HelpHub within 30 days of joining."
+    },
+    {
+      "id": "F-GOV-14",
+      "topic": "governance",
+      "tier": "internal",
+      "tags": [
+        "risk_register",
+        "remediation"
+      ],
+      "text": "Risk acceptance decisions above a residual score of 15 require sign-off by the CEO and the DPO using form INT-FORM-12; risks scored 9-15 are accepted by the Privacy Steering Group, and all acceptances are logged in INT-RISK-REG with an expiry date no more than 12 months out."
+    },
+    {
+      "id": "F-GOV-15",
+      "topic": "governance",
+      "tier": "internal",
+      "tags": [
+        "dpo",
+        "remediation"
+      ],
+      "text": "The DPO's office runs a quarterly self-assessment against Art. 24 accountability obligations using checklist INT-CKL-24, covering RoPA currency, DPIA coverage, training completion and breach-log completeness; results are filed with the quarterly report to the CEO."
+    },
+    {
+      "id": "F-GOV-16",
+      "topic": "governance",
+      "tier": "internal",
+      "tags": [
+        "privacy_by_design"
+      ],
+      "text": "The Beacon AI lead-scoring DPIA (DPIA-2025-014, completed 2025-08-29, led by Julia Moreau with DPO advice per Art. 35(2)) concluded the processing is high-risk but mitigable, and mandated human-review safeguards under Art. 22(3) including a right-to-contest workflow in Beacon Settings > Privacy."
+    },
+    {
+      "id": "F-GOV-17",
+      "topic": "governance",
+      "tier": "confidential",
+      "tags": [
+        "dpo",
+        "raci"
+      ],
+      "text": "In practice the DPO's quarterly compliance reports are routed through Priya Raman, General Counsel, before reaching the CEO, and Priya Raman has twice (2025-11 and 2026-05) edited the DPO's report to the CEO to remove items she considered legally sensitive; the DPO flagged this in memo CONF-MEMO-DPO-2026-04 as a possible Art. 38(3) independence concern because it means the DPO does not in practice report directly to the highest management level."
+    },
+    {
+      "id": "F-GOV-18",
+      "topic": "governance",
+      "tier": "confidential",
+      "tags": [
+        "dpo",
+        "raci"
+      ],
+      "text": "The DPO's 2026-04 independence memo CONF-MEMO-DPO-2026-04 also notes that the DPO's 2026 performance review was drafted by the General Counsel rather than the CEO, creating a perceived penalisation risk under Art. 38(3); no remediation of the reporting line had been agreed as of 2026-09-15."
+    },
+    {
+      "id": "F-GOV-19",
+      "topic": "governance",
+      "tier": "confidential",
+      "tags": [
+        "remediation",
+        "fine_exposure"
+      ],
+      "text": "Board resolution CONF-BRD-2026-06-R3 (board meeting 2026-06-18, chaired by Margaret Ellison) approved a privacy remediation budget of EUR 1.8 million for FY2027 covering RoPA tooling, DPIA automation and training platform upgrades, but cut the requested headcount from four additional privacy staff to two, rejecting the DPO's and Mara Okafor's staffing assessment."
+    },
+    {
+      "id": "F-GOV-20",
+      "topic": "governance",
+      "tier": "confidential",
+      "tags": [
+        "fine_exposure",
+        "risk_register"
+      ],
+      "text": "Confidential risk CONF-RISK-07 records that Acme's Art. 30(5) exemption does not apply (450 employees but non-occasional processing) and that the RoPA was 40% out of date as of the 2026-06 internal audit; an Art. 30 infringement exposes Acme to fines up to EUR 10 million or 2% of total worldwide annual turnover under Art. 83(4), and Kwame Mensah's audit (CONF-AUD-2026-02) estimated realistic DPC fine exposure from combined RoPA and training gaps at EUR 250,000-900,000."
+    },
+    {
+      "id": "F-GOV-21",
+      "topic": "governance",
+      "tier": "confidential",
+      "tags": [
+        "training",
+        "risk_register"
+      ],
+      "text": "Confidential risk CONF-RISK-04 records that the 2025 training completion rate of 96% concealed a concentrated gap: 31% of Customer Support agents in Owen Gallagher's team had not completed INT-COURSE-SUP-115 by the 2025-12-15 deadline, and three of them mishandled DSR tickets in January 2026, which the DPO assessed as an Art. 39(1)(b) monitoring failure."
+    },
+    {
+      "id": "F-GOV-22",
+      "topic": "governance",
+      "tier": "confidential",
+      "tags": [
+        "remediation",
+        "fine_exposure"
+      ],
+      "text": "The DPC opened a complaint-based inquiry (reference CONF-DPC-2026-0117) on 2026-02-03 concerning a delayed erasure request handled through INT-Q-ERASE; Priya Raman's legal analysis in CONF-LEGAL-2026-03 estimates exposure under Art. 83(5) (infringement of Art. 12(3) and 17, up to EUR 20 million or 4% of turnover) and recommends settling without formal proceedings."
+    },
+    {
+      "id": "F-GOV-23",
+      "topic": "governance",
+      "tier": "confidential",
+      "tags": [
+        "remediation",
+        "raci"
+      ],
+      "text": "As part of CONF-BRD-2026-06-R3, CFO Helen Zhou argued the two approved privacy hires could be deferred to Q2 FY2027 to protect margin; the DPO and Kwame Mensah dissented in writing, warning that the DPC inquiry CONF-DPC-2026-0117 made the deferral indefensible under Art. 83(2) cooperation and mitigation factors, and the dissent is recorded in the board minutes."
+    },
+    {
+      "id": "F-GOV-24",
+      "topic": "governance",
+      "tier": "confidential",
+      "tags": [
+        "risk_register",
+        "privacy_by_design"
+      ],
+      "text": "Confidential risk CONF-RISK-11 records that the Beacon AI lead-scoring feature launched on 2025-10-06 two weeks before its DPIA-2025-014 mitigation sign-off was complete, a breach of Acme's own INT-FORM-07 gate; the Privacy Steering Group accepted the launch retroactively on 2025-10-28 with a six-week remediation deadline, which Lena Fischer's engineering team met on 2025-12-05."
+    },
+    {
+      "id": "F-GOV-25",
+      "topic": "governance",
+      "tier": "confidential",
+      "tags": [
+        "dpo",
+        "fine_exposure"
+      ],
+      "text": "Priya Raman's privileged analysis CONF-LEGAL-2026-07 (2026-08-14) assesses the DPO reporting-line issue as a low-probability but high-severity Art. 38(3) exposure: if the DPC found the DPO is not free of instructions and does not report to the highest management level, the infringement falls under Art. 83(4) (up to EUR 10 million or 2% of turnover), and the memo recommends Margaret Ellison sponsor a charter amendment moving the DPO line to the CEO directly, targeted for the 2027-01 board meeting."
+    }
+  ]
+}

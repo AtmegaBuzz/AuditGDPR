@@ -1,30 +1,66 @@
-"""Qdrant client. The server runs in Docker (see docker-compose.yml); URL via QDRANT_URL."""
+"""pgvector store. Postgres runs in Docker (see docker-compose.yml); DSN via DATABASE_URL.
+
+One table per mode (config.collection_name) so structure-aware vs fixed are A/B-comparable.
+"""
 from __future__ import annotations
 
-from qdrant_client import QdrantClient, models
+from dataclasses import dataclass
+
+import psycopg
+from pgvector import Vector
+from pgvector.psycopg import register_vector
+from psycopg.types.json import Jsonb
 
 from .chunking.base import Chunk
-from .config import QDRANT_URL
+from .config import DATABASE_URL
 
 
-def client() -> QdrantClient:
-    return QdrantClient(url=QDRANT_URL)
+@dataclass
+class Hit:
+    score: float      # cosine similarity (1 - cosine distance)
+    payload: dict
 
 
-def recreate(c: QdrantClient, name: str, dim: int) -> None:
-    if c.collection_exists(name):
-        c.delete_collection(name)
-    c.create_collection(name, vectors_config=models.VectorParams(size=dim, distance=models.Distance.COSINE))
+def client() -> psycopg.Connection:
+    with psycopg.connect(DATABASE_URL, autocommit=True) as boot:
+        boot.execute("CREATE EXTENSION IF NOT EXISTS vector")
+    conn = psycopg.connect(DATABASE_URL, autocommit=True)
+    register_vector(conn)
+    return conn
 
 
-def upsert(c: QdrantClient, name: str, chunks: list[Chunk], vectors: list[list[float]], batch: int = 128) -> None:
-    for i in range(0, len(chunks), batch):
-        c.upsert(name, points=[
-            models.PointStruct(id=ch.chunk_id, vector=v, payload={**ch.metadata, "text": ch.text, "chunk_index": ch.index})
-            for ch, v in zip(chunks[i:i + batch], vectors[i:i + batch])
-        ])
+def recreate(c: psycopg.Connection, name: str, dim: int) -> None:
+    c.execute(f'DROP TABLE IF EXISTS "{name}"')
+    c.execute(f"""CREATE TABLE "{name}" (
+        id          text PRIMARY KEY,
+        doc_id      text NOT NULL,
+        chunk_index integer NOT NULL,
+        text        text NOT NULL,
+        metadata    jsonb NOT NULL,
+        embedding   vector({int(dim)}) NOT NULL
+    )""")
+    c.execute(f'CREATE INDEX ON "{name}" (doc_id)')
+    c.execute(f'CREATE INDEX ON "{name}" USING hnsw (embedding vector_cosine_ops)')
 
 
-def search(c: QdrantClient, name: str, vector: list[float], k: int = 5, doc_id: str | None = None):
-    flt = models.Filter(must=[models.FieldCondition(key="doc_id", match=models.MatchValue(value=doc_id))]) if doc_id else None
-    return c.query_points(name, query=vector, limit=k, query_filter=flt, with_payload=True).points
+def upsert(c: psycopg.Connection, name: str, chunks: list[Chunk], vectors: list[list[float]], batch: int = 128) -> None:
+    sql = f"""INSERT INTO "{name}" (id, doc_id, chunk_index, text, metadata, embedding)
+              VALUES (%s, %s, %s, %s, %s, %s)
+              ON CONFLICT (id) DO UPDATE SET doc_id = EXCLUDED.doc_id, chunk_index = EXCLUDED.chunk_index,
+                  text = EXCLUDED.text, metadata = EXCLUDED.metadata, embedding = EXCLUDED.embedding"""
+    with c.cursor() as cur:
+        for i in range(0, len(chunks), batch):
+            cur.executemany(sql, [
+                (ch.chunk_id, ch.doc_id, ch.index, ch.text, Jsonb(ch.metadata), Vector(v))
+                for ch, v in zip(chunks[i:i + batch], vectors[i:i + batch])
+            ])
+
+
+def search(c: psycopg.Connection, name: str, vector: list[float], k: int = 5, doc_id: str | None = None) -> list[Hit]:
+    where = "WHERE doc_id = %(doc)s" if doc_id else ""
+    rows = c.execute(
+        f"""SELECT 1 - (embedding <=> %(v)s::vector) AS score, text, chunk_index, metadata
+            FROM "{name}" {where} ORDER BY embedding <=> %(v)s::vector LIMIT %(k)s""",
+        {"v": Vector(vector), "k": k, "doc": doc_id},
+    ).fetchall()
+    return [Hit(score, {**meta, "text": text, "chunk_index": idx}) for score, text, idx, meta in rows]

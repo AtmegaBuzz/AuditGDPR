@@ -1,0 +1,463 @@
+{
+  "PUB-COOKIE-001": {
+    "id": "PUB-COOKIE-001",
+    "title": "Cookie Policy",
+    "status": "ok",
+    "attempts": 1,
+    "words": 1434,
+    "scores": {
+      "fact_fidelity": 5,
+      "tier_discipline": 5,
+      "gdpr_accuracy": 5,
+      "realism": 5,
+      "retrievability": 5
+    },
+    "summary": "A public-facing Cookie Policy (PUB-COOKIE-001 v2.0) for Acme Corp's website visitors explaining cookie categories, the consent banner, and the Art. 6 lawful bases for each category. It covers how visitors can give, refuse or withdraw consent, the absolute right to object to direct marketing, and how Acme records consent evidence under Art. 5(2) GDPR.",
+    "path": "/Users/apple/Desktop/projects/AuditGDPR/data/acme/public/PUB-COOKIE-001.md",
+    "issues": [],
+    "seconds": 4
+  },
+  "PUB-TRUST-001": {
+    "id": "PUB-TRUST-001",
+    "title": "Trust Center: Security and Incident Response Overview",
+    "status": "ok",
+    "attempts": 1,
+    "words": 1558,
+    "scores": {
+      "fact_fidelity": 5,
+      "tier_discipline": 5,
+      "gdpr_accuracy": 5,
+      "realism": 5,
+      "retrievability": 5
+    },
+    "summary": "A public Trust Center page, owned by Security and approved by the CISO, giving customers and prospects a plain-language overview of Acme's security posture and personal data breach response commitments under GDPR Articles 32-34. It covers the 72-hour DPC notification commitment, high-risk individual notification, processor-to-controller notification under the DPA, internal breach documentation, and how to report a suspected breach to the DPO's office.",
+    "path": "/Users/apple/Desktop/projects/AuditGDPR/data/acme/public/PUB-TRUST-001.md",
+    "issues": [],
+    "seconds": 4
+  },
+  "PUB-SUBPROC-001": {
+    "id": "PUB-SUBPROC-001",
+    "title": "Acme Sub-processor List",
+    "status": "ok",
+    "attempts": 2,
+    "words": 1507,
+    "scores": {
+      "fact_fidelity": 5,
+      "tier_discipline": 5,
+      "gdpr_accuracy": 5,
+      "realism": 5,
+      "retrievability": 5
+    },
+    "summary": "A customer-facing public notice listing Acme Corp's current sub-processors (AWS eu-west-1 hosting, Stripe payment processing, and the US parent for group administration), with purpose, data categories, location and transfer mechanism for each. It explains Acme's Art. 28 DPA terms, the 30-day change-notification and objection commitment, international transfer safeguards (DPF/SCCs with Schrems II transfer impact assessments), and customer audit rights.",
+    "path": "/Users/apple/Desktop/projects/AuditGDPR/data/acme/public/PUB-SUBPROC-001.md",
+    "issues": [
+      "[warn] length: 1507 words vs target 900",
+      "[warn] coverage (section 2): required fact F-TRA-02 not reflected (expect one of ['2026-06-02'])",
+      "[warn] coverage (section 5): required fact F-TRA-02 not reflected (expect one of ['2026-06-02'])"
+    ],
+    "seconds": 4
+  },
+  "PUB-RETAIN-001": {
+    "id": "PUB-RETAIN-001",
+    "title": "Data Retention Summary",
+    "status": "ok",
+    "attempts": 1,
+    "words": 959,
+    "scores": {
+      "fact_fidelity": 5,
+      "tier_discipline": 5,
+      "gdpr_accuracy": 5,
+      "realism": 5,
+      "retrievability": 5
+    },
+    "summary": "A plain-language, customer-facing public notice summarizing how long Acme Corp retains customer account data, billing records, and backups, with exceptions for legal holds and instructions for requesting erasure. It cites the GDPR storage limitation principle and Art. 17 erasure rights, and directs customers to privacy@acme.example or Beacon Settings > Privacy.",
+    "path": "/Users/apple/Desktop/projects/AuditGDPR/data/acme/public/PUB-RETAIN-001.md",
+    "issues": [],
+    "seconds": 19
+  },
+  "INT-SOP-DPIA-001": {
+    "id": "INT-SOP-DPIA-001",
+    "title": "DPIA Procedure and Screening Checklist",
+    "status": "ok",
+    "attempts": 1,
+    "words": 2624,
+    "scores": {
+      "fact_fidelity": 5,
+      "tier_discipline": 5,
+      "gdpr_accuracy": 5,
+      "realism": 5,
+      "retrievability": 5
+    },
+    "summary": "This is the Privacy Office SOP governing Acme's two-stage DPIA process: mandatory screening of all new processing ideas against the nine WP248 rev.01 criteria via INT-Q-DPIA-SCREEN and INT-FORM-11, escalation to a full DPIA on INT-FORM-12 where two or more criteria are met, risk scoring, DPO sign-off rules, and the Art. 36 prior-consultation pathway. It uses the Beacon AI lead-scoring DPIA (INT-DPIA-2025-07) as the worked example throughout.",
+    "path": "/Users/apple/Desktop/projects/AuditGDPR/data/acme/internal/INT-SOP-DPIA-001.md",
+    "issues": [],
+    "seconds": 4
+  },
+  "INT-SOP-ERASE-001": {
+    "id": "INT-SOP-ERASE-001",
+    "title": "Erasure Request Handling Procedure (superseded v2.0)",
+    "status": "ok",
+    "attempts": 1,
+    "words": 2051,
+    "scores": {
+      "fact_fidelity": 5,
+      "tier_discipline": 5,
+      "gdpr_accuracy": 5,
+      "realism": 5,
+      "retrievability": 5
+    },
+    "summary": "Superseded v2.0 SOP for handling GDPR Art. 17 erasure requests at Acme Corp, reflecting the pre-2026 process: intake via the shared privacy@acme.example mailbox, email-reply identity verification, and a 30-calendar-day internal SLA. It covers intake, verification, four-system deletion execution, Art. 17(3) exceptions, Art. 19 third-party notifications, and escalation. It was replaced by INT-SOP-ERASE-002 on 2026-03-01.",
+    "path": "/Users/apple/Desktop/projects/AuditGDPR/data/acme/internal/INT-SOP-ERASE-001.md",
+    "issues": [],
+    "seconds": 24
+  },
+  "PUB-AI-001": {
+    "id": "PUB-AI-001",
+    "title": "Beacon AI Lead Scoring: Transparency Statement",
+    "status": "ok",
+    "attempts": 1,
+    "words": 1296,
+    "scores": {
+      "fact_fidelity": 5,
+      "tier_discipline": 5,
+      "gdpr_accuracy": 5,
+      "realism": 5,
+      "retrievability": 5
+    },
+    "summary": "A public transparency statement for Beacon AI lead scoring explaining what the feature does, what data it uses, and that no decision is made solely by automated means. It covers human review and Article 22(3) safeguards, Acme's DPIA process under Article 35 GDPR including WP248 rev.01 screening, and how to request a DPIA summary from the DPO.",
+    "path": "/Users/apple/Desktop/projects/AuditGDPR/data/acme/public/PUB-AI-001.md",
+    "issues": [],
+    "seconds": 38
+  },
+  "INT-CHARTER-DPO-001": {
+    "id": "INT-CHARTER-DPO-001",
+    "title": "DPO Charter and Privacy RACI",
+    "status": "needs_review",
+    "attempts": 3,
+    "words": 2063,
+    "scores": {},
+    "summary": "Internal policy chartering the DPO function at Acme Corp Ltd: formalises Tomás Reyes's appointment and independence under Art. 37-39 GDPR, sets out his Art. 39 task list, documents the privacy governance RACI across DPO, Privacy Ops, Counsel, CISO and VP Engineering, and establishes the Privacy Steering Group cadence, quarterly CEO reporting and Art. 24 self-assessment cycle.",
+    "path": "/Users/apple/Desktop/projects/AuditGDPR/artifacts/synth/needs_review/INT-CHARTER-DPO-001.md",
+    "issues": [
+      "[error] leak (section 6): 'Daniel Whitfield' is known only at a higher tier"
+    ],
+    "seconds": 0
+  },
+  "PUB-NOTICE-001": {
+    "id": "PUB-NOTICE-001",
+    "title": "Acme Privacy Notice",
+    "status": "needs_review",
+    "attempts": 3,
+    "words": 2589,
+    "scores": {},
+    "summary": "The public-facing Acme Privacy Notice (PUB-NOTICE-001, v5.0) covering who Acme is and how to contact the DPO, the lawful bases for marketing, cookies and analytics, the rights of access, portability, erasure and objection with their deadlines and exceptions, international transfer safeguards, and retention periods. Written in plain, customer-facing language with precise GDPR citations and no internal systems or identifiers beyond the Beacon Settings > Privacy self-service page.",
+    "path": "/Users/apple/Desktop/projects/AuditGDPR/artifacts/synth/needs_review/PUB-NOTICE-001.md",
+    "issues": [
+      "[warn] coverage (section 6): required fact F-TRA-01 not reflected (expect one of ['2026-03-15'])",
+      "[warn] coverage (section 6): required fact F-TRA-02 not reflected (expect one of ['2026-06-02'])",
+      "[error] coverage: only 0/2 checkable required facts appear in the document"
+    ],
+    "seconds": 0
+  },
+  "INT-LIA-001": {
+    "id": "INT-LIA-001",
+    "title": "Legitimate Interests Assessment: Product Analytics",
+    "status": "ok",
+    "attempts": 1,
+    "words": 2283,
+    "scores": {
+      "fact_fidelity": 5,
+      "tier_discipline": 5,
+      "gdpr_accuracy": 5,
+      "realism": 5,
+      "retrievability": 5
+    },
+    "summary": "Legitimate Interests Assessment (INT-LIA-001, v1.2) for Acme's own-website pseudonymised product-usage analytics, documenting the Art. 6(1)(f) three-part test, the Art. 21 opt-out mechanism, safeguards, and residual risk. It explicitly excludes Beacon customers' end-user data, which Acme processes as processor. Approved by the DPO and reviewed annually by the Head of Privacy Operations against EDPB Guidelines 01/2024.",
+    "path": "/Users/apple/Desktop/projects/AuditGDPR/data/acme/internal/INT-LIA-001.md",
+    "issues": [],
+    "seconds": 7
+  },
+  "INT-POL-CLASS-001": {
+    "id": "INT-POL-CLASS-001",
+    "title": "Data Classification Policy",
+    "status": "ok",
+    "attempts": 2,
+    "words": 1789,
+    "scores": {
+      "fact_fidelity": 5,
+      "tier_discipline": 5,
+      "gdpr_accuracy": 5,
+      "realism": 5,
+      "retrievability": 5
+    },
+    "summary": "Data Classification Policy (INT-POL-CLASS-001) v2.1 defining Acme's three-tier Public/Internal/Confidential scheme, who may access each tier, and handling rules for storage, sharing and backups. It maps example record types to tiers (RoPA extracts and DSR tickets Internal; DPIAs and regulator correspondence Confidential) and aligns tiering with Art. 5 and Art. 32 obligations. Owned by Security, approved by the CISO, effective 2026-01-08.",
+    "path": "/Users/apple/Desktop/projects/AuditGDPR/data/acme/internal/INT-POL-CLASS-001.md",
+    "issues": [],
+    "seconds": 46
+  },
+  "CONF-CORR-DPC-001": {
+    "id": "CONF-CORR-DPC-001",
+    "title": "Correspondence with the Irish Data Protection Commission (Complaint Inquiry)",
+    "status": "needs_review",
+    "attempts": 3,
+    "words": 2699,
+    "scores": {},
+    "summary": "A confidential Legal file (CONF-CORR-DPC-001) containing the Irish DPC's complaint-based inquiry CONF-DPC-2026-0117 about a data subject whose erasure request took 27 days, Acme's formal response demonstrating compliance with the one-month statutory deadline while disclosing the Atlas deletion-job defect and remediation plan, and the DPC's follow-up pressing on systemic delays. A privileged annex records internal risk exposures — the Atlas churn-analytics episode, DPO reporting-line concerns, RoPA and training gaps — that Legal recommends withholding from the regulator.",
+    "path": "/Users/apple/Desktop/projects/AuditGDPR/artifacts/synth/needs_review/CONF-CORR-DPC-001.md",
+    "issues": [
+      "[error] invented-id (section 3): identifier CONF-CORR-DPC-001-R1 is not in the fact sheet or related documents",
+      "[warn] coverage (section 3): required fact F-ERA-23 not reflected (expect one of ['3june2026', 'CONF-MEMO-2026-ERASE'])"
+    ],
+    "seconds": 49
+  },
+  "PUB-FAQ-DSR-001": {
+    "id": "PUB-FAQ-DSR-001",
+    "title": "Your Data Protection Rights: Frequently Asked Questions",
+    "status": "ok",
+    "attempts": 1,
+    "words": 1934,
+    "scores": {
+      "fact_fidelity": 5,
+      "tier_discipline": 5,
+      "gdpr_accuracy": 5,
+      "realism": 5,
+      "retrievability": 5
+    },
+    "summary": "A public FAQ explaining how customers and end users can exercise their GDPR rights with Acme: how to submit access, portability and erasure requests via privacy@acme.example or Beacon Settings > Privacy, the one-month response deadline and extensions, identity verification, exceptions to erasure, recipient notification, and Acme's processor role for customers' end-user data. Written in plain, customer-facing language with precise GDPR citations and no internal systems beyond the self-service privacy page.",
+    "path": "/Users/apple/Desktop/projects/AuditGDPR/data/acme/public/PUB-FAQ-DSR-001.md",
+    "issues": [],
+    "seconds": 52
+  },
+  "INT-SOP-VENDOR-001": {
+    "id": "INT-SOP-VENDOR-001",
+    "title": "Vendor Onboarding and DPA Checklist",
+    "status": "ok",
+    "attempts": 1,
+    "words": 2283,
+    "scores": {
+      "fact_fidelity": 5,
+      "tier_discipline": 5,
+      "gdpr_accuracy": 5,
+      "realism": 5,
+      "retrievability": 5
+    },
+    "summary": "INT-SOP-VENDOR-001 v3.2 is the Legal & Procurement-owned SOP that operationalizes GDPR Art. 28 and Art. 32 compliance for Acme's vendors and Beacon sub-processors. It covers privacy screening via INT-Q-VENDOR and INT-FORM-07, DPA execution and the Atlas VENDORS_ROPA register, the 30-day sub-processor change notification workflow in INT-Q-SUBCH, annual reassessment via INT-CHK-04, and customer audit request handling in INT-Q-AUDIT.",
+    "path": "/Users/apple/Desktop/projects/AuditGDPR/data/acme/internal/INT-SOP-VENDOR-001.md",
+    "issues": [],
+    "seconds": 77
+  },
+  "INT-IRP-001": {
+    "id": "INT-IRP-001",
+    "title": "Security Incident Response Plan",
+    "status": "ok",
+    "attempts": 3,
+    "words": 3912,
+    "scores": {
+      "fact_fidelity": 5,
+      "tier_discipline": 5,
+      "gdpr_accuracy": 5,
+      "realism": 5,
+      "retrievability": 5
+    },
+    "summary": "INT-IRP-001 v4.0 is Acme's internal Security Incident Response Plan covering detection, triage, severity scoring, and GDPR Art. 33/34 breach notification for both Acme's controller data and processor-side Beacon customer data. It sets internal targets stricter than the legal deadlines (48-hour DPC notification, 4-hour customer-controller notification) and defines the roles of the CISO, DPO, Privacy Operations, Legal and Customer Support across the response lifecycle, ending in the Vault-based Art. 33(5) breach register.",
+    "path": "/Users/apple/Desktop/projects/AuditGDPR/data/acme/internal/INT-IRP-001.md",
+    "issues": [],
+    "seconds": 99
+  },
+  "INT-SOP-TRANSFER-001": {
+    "id": "INT-SOP-TRANSFER-001",
+    "title": "International Transfers Procedure (SCCs and TIA)",
+    "status": "ok",
+    "attempts": 1,
+    "words": 2459,
+    "scores": {
+      "fact_fidelity": 5,
+      "tier_discipline": 5,
+      "gdpr_accuracy": 5,
+      "realism": 5,
+      "retrievability": 5
+    },
+    "summary": "This is Acme's internal SOP (INT-SOP-TRANSFER-001 v1.8) governing international transfers of personal data outside the EEA under GDPR Art. 44 and Art. 46, owned by Legal & Privacy. It sets out the permitted transfer mechanisms (adequacy, SCCs, derogations), the 15-business-day TIA-onboarding SLA using template INT-FORM-TIA-07, the transfer register INT-REG-XFER-01 in Atlas, standard supplementary measures for US transfers, and the quarterly TIA review cycle, with named routes for MetricPulse, Stripe, Beacon AI and parent-company access.",
+    "path": "/Users/apple/Desktop/projects/AuditGDPR/data/acme/internal/INT-SOP-TRANSFER-001.md",
+    "issues": [],
+    "seconds": 90
+  },
+  "INT-TRAIN-001": {
+    "id": "INT-TRAIN-001",
+    "title": "Staff Privacy Training Handbook",
+    "status": "needs_review",
+    "attempts": 3,
+    "words": 1877,
+    "scores": {},
+    "summary": "The Staff Privacy Training Handbook (INT-TRAIN-001, v2026.1) is the Privacy Office's internal guide explaining Acme's mandatory privacy training: the annual Learning Hub course INT-COURSE-PRIV-101 for all employees, plus role-based courses for engineers and support agents. It summarises the three core curriculum modules — Article 5 principles and data classification, handling data subject requests under Article 12, and recognising and reporting personal data breaches under Article 33 — and explains completion tracking by Internal Audit and escalation for non-completion.",
+    "path": "/Users/apple/Desktop/projects/AuditGDPR/artifacts/synth/needs_review/INT-TRAIN-001.md",
+    "issues": [
+      "[error] leak (section 7): 'Kwame Mensah' is known only at a higher tier"
+    ],
+    "seconds": 55
+  },
+  "INT-SOP-CONSENT-001": {
+    "id": "INT-SOP-CONSENT-001",
+    "title": "Consent and Marketing Preferences Procedure",
+    "status": "ok",
+    "attempts": 2,
+    "words": 2113,
+    "scores": {
+      "fact_fidelity": 5,
+      "tier_discipline": 5,
+      "gdpr_accuracy": 5,
+      "realism": 5,
+      "retrievability": 5
+    },
+    "summary": "INT-SOP-CONSENT-001 v2.3 is Marketing Operations' procedure covering how Acme captures consent (CMP v3 banner), records it in Atlas consent_events, and handles withdrawals and Art. 21 objections through PrivacyDesk queue INT-Q-CONSENT within a 5-business-day SLA. It also sets out the lawful-basis map for marketing and analytics, the INT-CKL-02 pre-campaign consent verification, and the annual review of the INT-FORM-07 legitimate-interests assessment.",
+    "path": "/Users/apple/Desktop/projects/AuditGDPR/data/acme/internal/INT-SOP-CONSENT-001.md",
+    "issues": [],
+    "seconds": 131
+  },
+  "CONF-DPIA-AI-001": {
+    "id": "CONF-DPIA-AI-001",
+    "title": "Data Protection Impact Assessment: Beacon AI Lead Scoring",
+    "status": "ok",
+    "attempts": 1,
+    "words": 3569,
+    "scores": {
+      "fact_fidelity": 5,
+      "tier_discipline": 5,
+      "gdpr_accuracy": 5,
+      "realism": 5,
+      "retrievability": 5
+    },
+    "summary": "CONF-DPIA-AI-001 is version 1.3 of the DPIA for Beacon AI lead scoring (INT-DPIA-2025-07), written for the DPIA review board and executive leadership. It documents the Art. 35(7) assessment, the HIGH residual Article 22 risk (CONF-RISK-07, scored 4x4) arising from solely automated profiling and SLA-breached human review, and the unresolved Article 36 prior-consultation decision deferred by the board to Priya Raman and the DPO.",
+    "path": "/Users/apple/Desktop/projects/AuditGDPR/data/acme/confidential/CONF-DPIA-AI-001.md",
+    "issues": [],
+    "seconds": 88
+  },
+  "INT-CHECK-PBD-001": {
+    "id": "INT-CHECK-PBD-001",
+    "title": "Privacy-by-Design Launch Checklist",
+    "status": "ok",
+    "attempts": 1,
+    "words": 1743,
+    "scores": {
+      "fact_fidelity": 5,
+      "tier_discipline": 5,
+      "gdpr_accuracy": 5,
+      "realism": 5,
+      "retrievability": 5
+    },
+    "summary": "This is the Privacy Office's pre-launch privacy-by-design checklist (INT-CHECK-PBD-001 v1.5) for product and engineering, covering screening in INT-Q-DPIA-SCREEN, DPIA escalation, the INT-FORM-07 privacy review before code freeze, and DPO sign-off rules, with the Beacon AI lead-scoring DPIA as the worked example. It operationalises Art. 25 and Art. 35 GDPR and EDPB Guidelines 04/2019.",
+    "path": "/Users/apple/Desktop/projects/AuditGDPR/data/acme/internal/INT-CHECK-PBD-001.md",
+    "issues": [
+      "[warn] coverage (section 3): required fact F-GOV-16 not reflected (expect one of ['2025-08-29'])",
+      "[warn] coverage (section 4): required fact F-GOV-16 not reflected (expect one of ['2025-08-29'])"
+    ],
+    "seconds": 349
+  },
+  "PUB-DPA-001": {
+    "id": "PUB-DPA-001",
+    "title": "Acme Customer Data Processing Addendum",
+    "status": "needs_review",
+    "attempts": 3,
+    "words": 3327,
+    "scores": {},
+    "summary": "This is the public Data Processing Addendum (PUB-DPA-001, v4.1, effective 2026-02-01) that Acme Corp Ltd offers to customers contracting with it as processor for end-user data in the Acme Beacon platform. It sets out Art. 28 processing terms, security measures, sub-processor authorisation and 30-day change notice, breach notification duties, international transfer safeguards (DPF/SCCs with Schrems II TIAs), audit rights via ISO 27001 and SOC 2 Type II reports, and deletion/return obligations.",
+    "path": "/Users/apple/Desktop/projects/AuditGDPR/artifacts/synth/needs_review/PUB-DPA-001.md",
+    "issues": [
+      "[warn] coverage (section 1): required fact F-TRA-02 not reflected (expect one of ['2026-06-02'])",
+      "[warn] coverage (section 3): required fact F-TRA-02 not reflected (expect one of ['2026-06-02'])",
+      "[warn] coverage (section 7): required fact F-TRA-02 not reflected (expect one of ['2026-06-02'])",
+      "[error] coverage: only 2/5 checkable required facts appear in the document"
+    ],
+    "seconds": 755
+  },
+  "INT-SOP-ERASE-002": {
+    "id": "INT-SOP-ERASE-002",
+    "title": "Erasure Request Handling Procedure",
+    "status": "ok",
+    "attempts": 1,
+    "words": 3063,
+    "scores": {
+      "fact_fidelity": 5,
+      "tier_discipline": 5,
+      "gdpr_accuracy": 5,
+      "realism": 5,
+      "retrievability": 5
+    },
+    "summary": "INT-SOP-ERASE-002 v3.1 is the Privacy Operations runbook for handling GDPR erasure requests end to end: intake via privacy@acme.example or Beacon Settings > Privacy, logging in INT-Q-ERASE, identity verification per EDPB Guidelines 01/2022, ordered deletion across Beacon, Ledger, Atlas and HelpHub, Art. 17(3) exception handling, Art. 19 recipient notification, Vault backup expiry tracking, and escalation against the 20-day internal SLA.",
+    "path": "/Users/apple/Desktop/projects/AuditGDPR/data/acme/internal/INT-SOP-ERASE-002.md",
+    "issues": [],
+    "seconds": 62
+  },
+  "INT-RUN-BREACH-001": {
+    "id": "INT-RUN-BREACH-001",
+    "title": "Personal Data Breach Notification Runbook (72-hour clock)",
+    "status": "ok",
+    "attempts": 3,
+    "words": 3205,
+    "scores": {
+      "fact_fidelity": 5,
+      "tier_discipline": 5,
+      "gdpr_accuracy": 5,
+      "realism": 5,
+      "retrievability": 5
+    },
+    "summary": "INT-RUN-BREACH-001 v2.1 is the Privacy Operations & Security runbook that operationalises the 72-hour GDPR Art. 33(1) breach-notification clock for Acme Corp Ltd, from detection and INT-Q-BREACH triage through S1-S4 severity scoring, 48-hour DPC notification with DPO sign-off, 4-hour customer-controller notification for processor-side Beacon breaches, and Art. 34(1) individual communications. It ends with the Art. 33(5) breach register held in Vault with 5-year retention and quarterly Internal Audit review.",
+    "path": "/Users/apple/Desktop/projects/AuditGDPR/data/acme/internal/INT-RUN-BREACH-001.md",
+    "issues": [],
+    "seconds": 68
+  },
+  "INT-SOP-DSAR-001": {
+    "id": "INT-SOP-DSAR-001",
+    "title": "Data Subject Access and Portability Procedure",
+    "status": "ok",
+    "attempts": 1,
+    "words": 2619,
+    "scores": {
+      "fact_fidelity": 5,
+      "tier_discipline": 5,
+      "gdpr_accuracy": 5,
+      "realism": 5,
+      "retrievability": 5
+    },
+    "summary": "INT-SOP-DSAR-001 v2.5 is the Privacy Operations runbook for handling data subject access and portability requests end to end: intake into INT-Q-DSAR, identity verification per INT-FORM-03, manual gathering across Beacon, Atlas and HelpHub, redaction with four-eyes review, and response within the 20-day internal SLA. It also covers Art. 20 portability exports, refusals with legal sign-off, and the separate controller-assistance track for customer requests about end-user data.",
+    "path": "/Users/apple/Desktop/projects/AuditGDPR/data/acme/internal/INT-SOP-DSAR-001.md",
+    "issues": [],
+    "seconds": 103
+  },
+  "INT-ROPA-001": {
+    "id": "INT-ROPA-001",
+    "title": "Record of Processing Activities (extract)",
+    "status": "ok",
+    "attempts": 2,
+    "words": 2683,
+    "scores": {
+      "fact_fidelity": 5,
+      "tier_discipline": 5,
+      "gdpr_accuracy": 5,
+      "realism": 5,
+      "retrievability": 5
+    },
+    "summary": "An internal extract of Acme's Art. 30 record of processing activities (INT-ROPA-001, v2026.3), presenting roughly eight processing activities in table form across controller-side and processor-side (Beacon) registers, with recipients, retention periods and security measures. It documents the vendor feed from Atlas VENDORS_ROPA, the AWS eu-west-1 and Stripe sub-processors, and maintenance/review governance owned by Mara Okafor and approved by DPO Tomás Reyes.",
+    "path": "/Users/apple/Desktop/projects/AuditGDPR/data/acme/internal/INT-ROPA-001.md",
+    "issues": [],
+    "seconds": 117
+  },
+  "CONF-CHAT-ATLAS-001": {
+    "id": "CONF-CHAT-ATLAS-001",
+    "title": "Executive Chat Export: Retaining Deleted Customers' Data in Atlas",
+    "status": "ok",
+    "attempts": 1,
+    "words": 1626,
+    "scores": {
+      "fact_fidelity": 5,
+      "tier_discipline": 5,
+      "gdpr_accuracy": 5,
+      "realism": 5,
+      "retrievability": 5
+    },
+    "summary": "A CONFIDENTIAL executive chat export (CONF-CHAT-ATLAS-001) capturing the 2026 thread in which Helen Zhou and Julia Moreau proposed retaining deleted customers' billing history in Atlas for churn analytics, and the resulting legal and engineering debate. It records Priya Raman's Art. 17(1)(a)/5(1)(e) warning, the Vault 35-day backup residual risk accepted under CONF-BRD-2026-06-R3 with Tomás Reyes's dissent, Aoife Brennan's CONF-MEMO-2026-ERASE conditions, and the decision to pseudonymise Atlas analytics. Retained as a legal hold record.",
+    "path": "/Users/apple/Desktop/projects/AuditGDPR/data/acme/confidential/CONF-CHAT-ATLAS-001.md",
+    "issues": [],
+    "seconds": 70
+  }
+}

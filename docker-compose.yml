@@ -1,13 +1,20 @@
 services:
-  qdrant:
-    image: qdrant/qdrant:latest
-    container_name: auditgdpr-qdrant
+  postgres:
+    image: pgvector/pgvector:pg17
+    container_name: auditgdpr-postgres
+    environment:
+      POSTGRES_USER: auditgdpr
+      POSTGRES_PASSWORD: auditgdpr
+      POSTGRES_DB: auditgdpr
     ports:
-      - "6333:6333"   # REST + dashboard (http://localhost:6333/dashboard)
-      - "6334:6334"   # gRPC
+      - "5432:5432"
     volumes:
-      - qdrant_storage:/qdrant/storage
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U auditgdpr -d auditgdpr"]
+      interval: 5s
+      retries: 10
     restart: unless-stopped
 
 volumes:
-  qdrant_storage:
+  pgdata:

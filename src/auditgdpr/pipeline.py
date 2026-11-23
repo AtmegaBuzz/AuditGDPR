@@ -1,4 +1,4 @@
-"""Ingestion pipeline:  PDF -> sections -> chunks -> (embeddings) -> local Qdrant.
+"""Ingestion pipeline:  PDF -> sections -> chunks -> (embeddings) -> pgvector.
 
 The `structure_aware` flag swaps the chunking stage only; everything else is identical,
 so the two collections (gdpr_structure_aware / gdpr_fixed) are directly comparable.
@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import json
 import time
+from pathlib import Path
 from dataclasses import dataclass
 
 from . import config, corpus, store
@@ -23,10 +24,11 @@ class Result:
     seconds: float
 
 
-def build_chunks(structure_aware_flag: bool, model: str, only: str | None = None, log=print) -> list[Chunk]:
+def build_chunks(structure_aware_flag: bool, model: str, only: str | None = None, log=print,
+                 root: Path = config.DATA_DIR, exclude=config.DEFAULT_EXCLUDE) -> list[Chunk]:
     tok = Tok(model)
     chunks: list[Chunk] = []
-    for doc in corpus.discover():
+    for doc in corpus.discover(root, exclude):
         if only and only not in doc.doc_id:
             continue
         segs, body = extract(doc.path, drop_small=doc.profile != "legal_act")
@@ -54,11 +56,12 @@ def export(chunks: list[Chunk], structure_aware_flag: bool) -> str:
 
 
 def run(structure_aware_flag: bool, model: str = config.EMBED_MODEL, device: str = "auto",
-        only: str | None = None, dry_run: bool = False, log=print) -> Result:
+        only: str | None = None, dry_run: bool = False, log=print,
+        root: Path = config.DATA_DIR, exclude=config.DEFAULT_EXCLUDE) -> Result:
     t0 = time.time()
     name = config.collection_name(structure_aware_flag)
     log(f"[1/3] chunking  mode={'structure-aware' if structure_aware_flag else 'fixed-window'}")
-    chunks = build_chunks(structure_aware_flag, model, only, log)
+    chunks = build_chunks(structure_aware_flag, model, only, log, root, exclude)
     log(f"      -> {len(chunks)} chunks, exported to {export(chunks, structure_aware_flag)}")
     if dry_run:
         return Result(chunks, name, time.time() - t0)
@@ -69,7 +72,7 @@ def run(structure_aware_flag: bool, model: str = config.EMBED_MODEL, device: str
     log(f"      device={emb.device} dim={emb.dim}")
     vectors = emb.embed_documents([c.embed_text for c in chunks])
 
-    log(f"[3/3] upserting into Qdrant collection '{name}' ({config.QDRANT_URL})")
+    log(f"[3/3] upserting into pgvector table '{name}' ({config.DATABASE_URL})")
     c = store.client()
     store.recreate(c, name, emb.dim)
     store.upsert(c, name, chunks, vectors)
