@@ -1,0 +1,22 @@
+[project]
+name = "auditgdpr"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "AtmegaBuzz", email = "swapnilshinde9382@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "pymupdf>=2.1",
+    "qdrant-client>=1.20.0",
+    "sentence-transformers>=6.3.0",
+    "torch>=2.15.0",
+]
+
+[project.scripts]
+auditgdpr = "auditgdpr.cli:app"
+
+[build-system]
+requires = ["uv_build>=0.12.13,<0.13.0"]
+build-backend = "uv_build"
