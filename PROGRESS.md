@@ -64,10 +64,10 @@ Result (BAAI tokenizer): **1,308** structure-aware chunks (tokens min/median/max
 Queries use the BGE instruction prefix; documents don't. ~33 s for the full corpus.
 - **Slot:** model is a CLI option (`--model BAAI/bge-m3`, `bge-large-en-v1.5`, …). Change `EMBED_DIM` handling is automatic.
 
-### [F] Vector store — ✅  (`store.py`)
-Embedded **local-mode Qdrant** (no server) at `./qdrant_data/` (git-ignored). Two collections, so modes are A/B-comparable:
+### [F] Vector store — ✅  (`store.py`, `docker-compose.yml`)
+**Qdrant server in Docker** (`docker compose up -d`; REST/dashboard `localhost:6333`, gRPC `6334`, named volume `qdrant_storage`). Client URL via `QDRANT_URL` env (default `http://localhost:6333`). Embeddings still run on the host Metal GPU (Docker can't use it). Two collections, so modes are A/B-comparable:
 `gdpr_structure_aware`, `gdpr_fixed`. Deterministic point ids (uuid5 of `doc:index`); payload = metadata + `text`.
-- Note: only one process may open the local store at a time.
+- Multiple processes (CLI, future API) can share the server.
 
 ### [G] Retrieval — 🟡  (`cli.py search`)
 Dense top-k with optional `doc_id` filter (in `store.search`). No metadata filtering from the CLI yet, no hybrid/BM25.
@@ -83,6 +83,7 @@ Planned slots, contracts already implied:
 ## Pipeline entry points
 
 ```bash
+docker compose up -d                            # start Qdrant
 uv sync
 uv run auditgdpr ingest --structure-aware      # headers + metadata aware chunking  -> gdpr_structure_aware
 uv run auditgdpr ingest                         # baseline fixed windows             -> gdpr_fixed
@@ -106,10 +107,11 @@ src/auditgdpr/
     fixed.py           [D] baseline chunker
     tokens.py          tokenizer-accurate budgeting
   embed.py             [E] bge on MPS
-  store.py             [F] local Qdrant
+  store.py             [F] Qdrant client (Docker)
   pipeline.py          orchestration (the flag lives here)
   cli.py               `auditgdpr ingest | search`
 ```
 
 ## Changelog
-- 2026-11-23 — [A]–[F] + basic [G]: structure-aware vs fixed ingestion pipeline running on Metal, local Qdrant populated.
+- 2026-11-23 — Qdrant moved from embedded local mode to Docker Compose; collections re-ingested.
+- 2026-11-23 — [A]–[F] + basic [G]: structure-aware vs fixed ingestion pipeline running on Metal, Qdrant populated.

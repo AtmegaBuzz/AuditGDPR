@@ -1,11 +1,12 @@
 """Central configuration: paths and defaults. Everything tunable lives here."""
 from __future__ import annotations
 
+import os
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 DATA_DIR = ROOT / "data"
-QDRANT_PATH = ROOT / "qdrant_data"      # embedded (local-mode) Qdrant storage
+QDRANT_URL = os.environ.get("QDRANT_URL", "http://localhost:6333")   # Qdrant runs in Docker (docker-compose.yml)
 EXPORT_DIR = ROOT / "artifacts"          # chunk dumps for inspection
 
 EMBED_MODEL = "BAAI/bge-base-en-v1.5"   # 768-d, 512-token window

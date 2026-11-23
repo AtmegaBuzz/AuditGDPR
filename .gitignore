@@ -8,6 +8,5 @@ wheels/
 
 # Virtual environments
 .venv
-qdrant_data/
 artifacts/
 .DS_Store

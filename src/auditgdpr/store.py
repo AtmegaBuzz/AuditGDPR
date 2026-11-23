@@ -1,14 +1,14 @@
-"""Embedded (local-mode) Qdrant: no server, data lives in ./qdrant_data."""
+"""Qdrant client. The server runs in Docker (see docker-compose.yml); URL via QDRANT_URL."""
 from __future__ import annotations
 
 from qdrant_client import QdrantClient, models
 
 from .chunking.base import Chunk
-from .config import QDRANT_PATH
+from .config import QDRANT_URL
 
 
 def client() -> QdrantClient:
-    return QdrantClient(path=str(QDRANT_PATH))
+    return QdrantClient(url=QDRANT_URL)
 
 
 def recreate(c: QdrantClient, name: str, dim: int) -> None:

@@ -69,7 +69,7 @@ def run(structure_aware_flag: bool, model: str = config.EMBED_MODEL, device: str
     log(f"      device={emb.device} dim={emb.dim}")
     vectors = emb.embed_documents([c.embed_text for c in chunks])
 
-    log(f"[3/3] upserting into local Qdrant collection '{name}' ({config.QDRANT_PATH})")
+    log(f"[3/3] upserting into Qdrant collection '{name}' ({config.QDRANT_URL})")
     c = store.client()
     store.recreate(c, name, emb.dim)
     store.upsert(c, name, chunks, vectors)
