@@ -208,7 +208,7 @@
       "[error] invented-id (section 3): identifier CONF-CORR-DPC-001-R1 is not in the fact sheet or related documents",
       "[warn] coverage (section 3): required fact F-ERA-23 not reflected (expect one of ['3june2026', 'CONF-MEMO-2026-ERASE'])"
     ],
-    "seconds": 49
+    "seconds": 0
   },
   "PUB-FAQ-DSR-001": {
     "id": "PUB-FAQ-DSR-001",
@@ -294,7 +294,7 @@
     "issues": [
       "[error] leak (section 7): 'Kwame Mensah' is known only at a higher tier"
     ],
-    "seconds": 55
+    "seconds": 0
   },
   "INT-SOP-CONSENT-001": {
     "id": "INT-SOP-CONSENT-001",
@@ -368,7 +368,7 @@
       "[warn] coverage (section 7): required fact F-TRA-02 not reflected (expect one of ['2026-06-02'])",
       "[error] coverage: only 2/5 checkable required facts appear in the document"
     ],
-    "seconds": 755
+    "seconds": 0
   },
   "INT-SOP-ERASE-002": {
     "id": "INT-SOP-ERASE-002",
@@ -459,5 +459,204 @@
     "path": "/Users/apple/Desktop/projects/AuditGDPR/data/acme/confidential/CONF-CHAT-ATLAS-001.md",
     "issues": [],
     "seconds": 70
+  },
+  "CONF-TIA-US-001": {
+    "id": "CONF-TIA-US-001",
+    "title": "Transfer Impact Assessment: US Product-Analytics Vendor",
+    "status": "ok",
+    "attempts": 1,
+    "words": 2155,
+    "scores": {
+      "fact_fidelity": 5,
+      "tier_discipline": 5,
+      "gdpr_accuracy": 5,
+      "realism": 5,
+      "retrievability": 5
+    },
+    "summary": "CONF-TIA-US-001 v1.1 is the Transfer Impact Assessment re-assessment for the MetricPulse Inc. US product-analytics transfer, concluding the arrangement is borderline because the vendor's DPF certification does not cover its analytics sub-processing and the EU key-custody supplementary measure is not yet contractually enforceable. It sets out the risk analysis (legal team medium vs CISO high), the CONF-AMEND-2026-08 remediation with a 2026-12-31 deadline, and the EUR 250,000 EU analytics-replacement contingency.",
+    "path": "/Users/apple/Desktop/projects/AuditGDPR/data/acme/confidential/CONF-TIA-US-001.md",
+    "issues": [],
+    "seconds": 374
+  },
+  "INT-GUIDE-SUPPORT-001": {
+    "id": "INT-GUIDE-SUPPORT-001",
+    "title": "Support Agent Guide: Handling Privacy Requests",
+    "status": "ok",
+    "attempts": 1,
+    "words": 2349,
+    "scores": {
+      "fact_fidelity": 5,
+      "tier_discipline": 5,
+      "gdpr_accuracy": 5,
+      "realism": 5,
+      "retrievability": 5
+    },
+    "summary": "A front-line guide for Customer Support agents on handling GDPR privacy requests: how to recognise erasure, access, portability and controller-assistance requests, log them in the right PrivacyDesk queue within one business day, collect only the intake fields allowed by INT-FORM-03, and set customer expectations without over-promising. It keeps agents out of verification, execution and refusal decisions, which stay with Privacy Operations, the DPO and the runbooks INT-SOP-ERASE-002 and INT-SOP-DSAR-001.",
+    "path": "/Users/apple/Desktop/projects/AuditGDPR/data/acme/internal/INT-GUIDE-SUPPORT-001.md",
+    "issues": [],
+    "seconds": 54
+  },
+  "CONF-AUD-DSR-001": {
+    "id": "CONF-AUD-DSR-001",
+    "title": "Internal Audit Report: Data Subject Request SLA Compliance (H1 2026)",
+    "status": "ok",
+    "attempts": 1,
+    "words": 3452,
+    "scores": {
+      "fact_fidelity": 5,
+      "tier_discipline": 5,
+      "gdpr_accuracy": 5,
+      "realism": 5,
+      "retrievability": 5
+    },
+    "summary": "CONF-AUD-DSR-001 is Internal Audit's H1 2026 report to the audit committee on data subject request SLA compliance, finding that 14% of erasure requests breached the 20-day internal SLA (all within the statutory one month) with the Atlas deletion job defect as the main cause. It sets out findings with evidence, the regulatory exposure including a live DPC complaint, and the approved EUR 180,000 remediation to rewrite the Atlas deletion job by Q1 2027.",
+    "path": "/Users/apple/Desktop/projects/AuditGDPR/data/acme/confidential/CONF-AUD-DSR-001.md",
+    "issues": [],
+    "seconds": 65
+  },
+  "INT-RUN-ERASE-001": {
+    "id": "INT-RUN-ERASE-001",
+    "title": "Erasure Execution Runbook (per system)",
+    "status": "ok",
+    "attempts": 1,
+    "words": 3137,
+    "scores": {
+      "fact_fidelity": 5,
+      "tier_discipline": 5,
+      "gdpr_accuracy": 5,
+      "realism": 5,
+      "retrievability": 5
+    },
+    "summary": "INT-RUN-ERASE-001 v2.4 is the per-system execution runbook Privacy Operations engineers use to carry out verified GDPR Article 17 erasure requests, covering the ordered deletion jobs across Beacon, Ledger, Atlas and HelpHub, the Article 17(3) exception checklist, Article 19 recipient notifications to Stripe and sub-processors, and Vault 35-day backup expiry tracking. It operationalises the 20-day internal SLA with day-14/day-20 escalation triggers and documents the known Atlas deletion-job defect requiring Data Platform re-runs.",
+    "path": "/Users/apple/Desktop/projects/AuditGDPR/data/acme/internal/INT-RUN-ERASE-001.md",
+    "issues": [],
+    "seconds": 87
+  },
+  "CONF-PIR-INC-0412": {
+    "id": "CONF-PIR-INC-0412",
+    "title": "Post-Incident Review: CONF-INC-2025-0412 Misdirected CSV Export",
+    "status": "ok",
+    "attempts": 1,
+    "words": 2591,
+    "scores": {
+      "fact_fidelity": 5,
+      "tier_discipline": 5,
+      "gdpr_accuracy": 5,
+      "realism": 5,
+      "retrievability": 5
+    },
+    "summary": "Post-incident review (CONF-PIR-INC-0412) of the 14 March 2025 misdirected Beacon CSV export affecting approximately 12,500 end-user data subjects, prepared by Security for the incident review board. It documents the 9-hour detection delay caused by alerting rules that covered database access but not CSV downloads, the contested S3 non-notification classification with the DPO's recorded dissent, and the governance response including the EUR 180,000 Board-funded alerting remediation and the new 24-hour escalation rule.",
+    "path": "/Users/apple/Desktop/projects/AuditGDPR/data/acme/confidential/CONF-PIR-INC-0412.md",
+    "issues": [],
+    "seconds": 367
+  },
+  "CONF-MIN-BRD-2026Q2": {
+    "id": "CONF-MIN-BRD-2026Q2",
+    "title": "Board of Directors Minutes: Q2 2026 (Privacy and Risk Items)",
+    "status": "ok",
+    "attempts": 1,
+    "words": 3434,
+    "scores": {
+      "fact_fidelity": 5,
+      "tier_discipline": 5,
+      "gdpr_accuracy": 5,
+      "realism": 5,
+      "retrievability": 5
+    },
+    "summary": "Confidential minutes of the Acme Corp board meeting of 12 June 2026 covering privacy and risk items: the DPO's Art. 24 compliance report including the DPC erasure inquiry, erasure operations and the Atlas deletion job remediation, and the adoption of resolution CONF-BRD-2026-06-R3 accepting the Vault 35-day backup erasure risk with the DPO's dissent minuted. The board also rejects the 36-month Atlas retention extension, approves a 90-day retention remediation and the EUR 1.8 million FY2027 privacy budget with reduced headcount, and notes the Beacon AI DPIA launch-gate breach.",
+    "path": "/Users/apple/Desktop/projects/AuditGDPR/data/acme/confidential/CONF-MIN-BRD-2026Q2.md",
+    "issues": [],
+    "seconds": 88
+  },
+  "CONF-MEMO-INC-0412": {
+    "id": "CONF-MEMO-INC-0412",
+    "title": "Privileged Memorandum: Notification Decision for Incident 0412",
+    "status": "ok",
+    "attempts": 1,
+    "words": 2844,
+    "scores": {
+      "fact_fidelity": 5,
+      "tier_discipline": 5,
+      "gdpr_accuracy": 5,
+      "realism": 5,
+      "retrievability": 5
+    },
+    "summary": "A privileged legal memorandum by Senior Privacy Counsel Aoife Brennan (17 March 2025) analysing whether the misdirected Beacon CSV export affecting ~12,500 end-user data subjects (CONF-INC-2025-0412) required notification to the DPC under Article 33 and communication to individuals under Article 34. It concludes the S3 non-notification classification is defensible despite the DPO's recorded dissent, while flagging Article 83(4) exposure, the 9-hour detection delay, and the export-channel detection gap later remediated with Board funding.",
+    "path": "/Users/apple/Desktop/projects/AuditGDPR/data/acme/confidential/CONF-MEMO-INC-0412.md",
+    "issues": [],
+    "seconds": 366
+  },
+  "CONF-REG-RISK-Q3": {
+    "id": "CONF-REG-RISK-Q3",
+    "title": "Privacy Risk Register: Q3 2026",
+    "status": "needs_review",
+    "attempts": 3,
+    "words": 3376,
+    "scores": {},
+    "summary": "The Q3 2026 Privacy Risk Register (CONF-REG-RISK-Q3) is the Privacy Office's confidential quarterly consolidation of roughly ten scored privacy risks for the risk committee and board, maintained by Mara Okafor in INT-RISK-REG and approved by DPO Tomás Reyes. It tabulates each risk with likelihood, impact, owner and status, covering erasure SLA breaches, the Beacon AI Art. 22 residual risk, the Atlas retention gap, the MetricPulse transfer gap, unsigned vendor DPAs, RoPA and training gaps, and the DPO independence issue, with movements since Q2, funded mitigations and open decisions for the committee.",
+    "path": "/Users/apple/Desktop/projects/AuditGDPR/artifacts/synth/needs_review/CONF-REG-RISK-Q3.md",
+    "issues": [
+      "[error] invented-id (section 3): identifier CONF-RISK-01 is not in the fact sheet or related documents",
+      "[error] invented-id (section 3): identifier CONF-RISK-02 is not in the fact sheet or related documents",
+      "[error] invented-id (section 3): identifier CONF-RISK-03 is not in the fact sheet or related documents",
+      "[error] invented-id (section 3): identifier CONF-RISK-05 is not in the fact sheet or related documents",
+      "[error] invented-id (section 3): identifier CONF-RISK-06 is not in the fact sheet or related documents",
+      "[error] invented-id (section 3): identifier CONF-RISK-08 is not in the fact sheet or related documents",
+      "[error] invented-id (section 3): identifier CONF-RISK-09 is not in the fact sheet or related documents",
+      "[error] invented-id (section 3): identifier CONF-RISK-10 is not in the fact sheet or related documents",
+      "[error] invented-id (section 3): identifier CONF-RISK-12 is not in the fact sheet or related documents",
+      "[error] invented-id (section 4): identifier CONF-TIA-2025-114 is not in the fact sheet or related documents"
+    ],
+    "seconds": 0
+  },
+  "CONF-MEMO-FINE-001": {
+    "id": "CONF-MEMO-FINE-001",
+    "title": "Privileged Memorandum: Article 83 Fine Exposure Assessment",
+    "status": "ok",
+    "attempts": 1,
+    "words": 2867,
+    "scores": {
+      "fact_fidelity": 5,
+      "tier_discipline": 5,
+      "gdpr_accuracy": 5,
+      "realism": 5,
+      "retrievability": 5
+    },
+    "summary": "A privileged legal memorandum from Legal to the General Counsel, CFO and CEO assessing Acme Corp Ltd's aggregate Article 83 fine exposure as of October 2026, centred on the live DPC inquiry CONF-DPC-2026-0117 into a delayed erasure request (Art. 83(5) tier) plus Art. 83(4)-tier exposures from the out-of-date RoPA, the support training gap, and the unresolved DPO independence issue. It applies the Art. 83(2) factors, weighs the aggravating effect of the board's deferred privacy hires against the EUR 1.8m remediation budget, and recommends settling the inquiry, restoring the DPO's direct reporting line, and reversing the hiring deferral.",
+    "path": "/Users/apple/Desktop/projects/AuditGDPR/data/acme/confidential/CONF-MEMO-FINE-001.md",
+    "issues": [],
+    "seconds": 63
+  },
+  "CONF-PLAN-REM-001": {
+    "id": "CONF-PLAN-REM-001",
+    "title": "Privacy Remediation Roadmap and Budget FY2026-27",
+    "status": "ok",
+    "attempts": 1,
+    "words": 2968,
+    "scores": {
+      "fact_fidelity": 5,
+      "tier_discipline": 5,
+      "gdpr_accuracy": 5,
+      "realism": 5,
+      "retrievability": 5
+    },
+    "summary": "CONF-PLAN-REM-001 is the Privacy Office's confidential FY2026-27 remediation roadmap for executive leadership and board, setting out workstreams, milestones, owners and the EUR 1.8 million budget approved under board resolution CONF-BRD-2026-06-R3. It prioritises the Atlas deletion job rewrite, RoPA and vendor-DPA remediation, training closure and restoration of the DPO's direct reporting line, against the backdrop of the live DPC inquiry CONF-DPC-2026-0117 and Art. 83 fine exposure. It also records the board's decision to defer the two approved privacy hires and the associated dissent.",
+    "path": "/Users/apple/Desktop/projects/AuditGDPR/data/acme/confidential/CONF-PLAN-REM-001.md",
+    "issues": [],
+    "seconds": 402
+  },
+  "INT-SCHED-RET-001": {
+    "id": "INT-SCHED-RET-001",
+    "title": "Data Retention Schedule",
+    "status": "needs_review",
+    "attempts": 3,
+    "words": 2202,
+    "scores": {},
+    "summary": "INT-SCHED-RET-001 v3.3 is Acme's internal Data Retention Schedule, owned by Privacy Operations and approved by the DPO, setting retention periods per data category and describing the deletion jobs, erasure-request SLA, legal-hold and exception processes that enforce them. It flags the known gap between the public 30-day commitment and Atlas's actual 24-month event retention, and defines quarterly Internal Audit compliance checks against the retention register.",
+    "path": "/Users/apple/Desktop/projects/AuditGDPR/artifacts/synth/needs_review/INT-SCHED-RET-001.md",
+    "issues": [
+      "[error] leak (section 6): 'Kwame Mensah' is known only at a higher tier"
+    ],
+    "seconds": 65
   }
 }

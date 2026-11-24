@@ -7,8 +7,10 @@ Record types
 """
 from __future__ import annotations
 
+import hashlib
 import json
 import math
+import threading
 import random
 import re
 from difflib import SequenceMatcher
@@ -156,6 +158,8 @@ def _run_task(ai: WorkersAI, t: dict) -> dict | None:
            "evidence": [] if kind == "unanswerable" else evidence,
            "gold_chunk_ids": [] if kind == "unanswerable" else [c.chunk_id for c in gold],
            "gold_doc_ids": [] if kind == "unanswerable" else sorted({c.doc_id for c in gold}),
+           "gold_access_level": None if kind == "unanswerable" else max(c.metadata.get("access_level", 0) for c in gold),
+           "gold_classification": None if kind == "unanswerable" else [c.metadata.get("classification", "public") for c in gold],
            "gold_sections": [] if kind == "unanswerable" else [c.metadata.get("section_path") for c in gold],
            "gold_pages": [] if kind == "unanswerable" else [[c.metadata.get("page_start"), c.metadata.get("page_end")] for c in gold],
            "seed_chunk_ids": [c.chunk_id for c in chunks]}
@@ -190,28 +194,95 @@ def _dedupe(recs: list[dict], thresh: float = 0.75) -> list[dict]:
     return kept
 
 
+def journal_path(structure_aware: bool):
+    return config.GOLDEN_DIR / f".progress_{'structure_aware' if structure_aware else 'fixed'}.jsonl"
+
+
+def _signature(chunks: list[Chunk], size: int, model: str, seed: int, structure_aware: bool) -> str:
+    """Identity of a run. The plan is deterministic given this, so task index i means the same task on every resume."""
+    h = hashlib.sha256(json.dumps([size, model, seed, structure_aware, P.__dict__.get("PROMPT_VERSION", 0)]).encode())
+    for c in sorted(chunks, key=lambda c: c.chunk_id):
+        h.update(c.chunk_id.encode())
+    return h.hexdigest()[:16]
+
+
+def pending_run(structure_aware: bool) -> tuple[int, int, int] | None:
+    """(tasks finished, tasks planned, requested size) of an interrupted run, or None."""
+    p = journal_path(structure_aware)
+    if not p.exists():
+        return None
+    try:
+        lines = [json.loads(l) for l in p.read_text().splitlines() if l.strip()]
+        return len(lines) - 1, lines[0]["planned"], lines[0]["size"]
+    except Exception:
+        return None
+
+
 def run(chunks: list[Chunk], size: int, model: str, structure_aware: bool, seed: int = 42,
-        concurrency: int = 8, log=print) -> dict:
+        concurrency: int = 8, log=print, resume: bool = True) -> dict:
+    """Resumable: every finished task (kept, rejected or skipped by the model) is appended to a journal as it completes.
+    If the run dies (network, Ctrl-C, crash), call run() again with the same settings and only the unfinished tasks are
+    redone. Tasks whose API call raised are NOT journaled, so they are retried. The journal is deleted on success;
+    changing size/model/seed/corpus starts fresh automatically."""
     rng = random.Random(seed)
     ai = WorkersAI(model)
     tasks = _plan(chunks, size, rng)
+    sig = _signature(chunks, size, model, seed, structure_aware)
+    jp = journal_path(structure_aware)
+    jp.parent.mkdir(parents=True, exist_ok=True)
+    done: dict[int, dict | None] = {}
+    if resume and jp.exists():
+        try:
+            lines = [json.loads(l) for l in jp.read_text().splitlines() if l.strip()]
+            if lines and lines[0].get("sig") == sig:
+                done = {x["i"]: x["rec"] for x in lines[1:]}
+                log(f"[golden] resuming: {len(done)}/{len(tasks)} tasks already finished")
+            else:
+                log("[golden] found a journal from different settings; starting fresh")
+        except (json.JSONDecodeError, KeyError):
+            log("[golden] unreadable journal; starting fresh")
+    if not done:
+        jp.write_text(json.dumps({"sig": sig, "planned": len(tasks), "size": size}) + "\n")
+    lock = threading.Lock()
+    jf = open(jp, "a", buffering=1)
+
+    def work(i: int, t: dict):
+        rec = _run_task(ai, t)
+        with lock:
+            jf.write(json.dumps({"i": i, "rec": rec}, ensure_ascii=False) + "\n")
+        return i, rec
     log(f"[golden] model={model} planned {len(tasks)} candidates "
         f"(single={sum(t['type']=='single' for t in tasks)}, multi={sum(t['type']=='multi' for t in tasks)}, "
         f"unanswerable={sum(t['type']=='unanswerable' for t in tasks)})")
-    results: list[dict] = []
+    results: list[dict] = [r for r in done.values() if r]
     failed = 0
-    with ThreadPoolExecutor(concurrency) as ex:
-        futs = [ex.submit(_run_task, ai, t) for t in tasks]
-        for i, f in enumerate(as_completed(futs), 1):
+    todo = [(i, t) for i, t in enumerate(tasks) if i not in done]
+    ex = ThreadPoolExecutor(concurrency)
+    try:
+        futs = [ex.submit(work, i, t) for i, t in todo]
+        for n, f in enumerate(as_completed(futs), 1):
             try:
-                r = f.result()
+                _, r = f.result()
                 if r:
                     results.append(r)
-            except Exception as e:   # one bad call must not kill a long run
+            except Exception as e:   # one bad call must not kill a long run; it is retried on the next resume
                 failed += 1
-                log(f"  ! task failed: {e}")
-            if i % 20 == 0:
-                log(f"  {i}/{len(tasks)} done")
+                log(f"  ! task failed (will be retried on resume): {e}")
+            if n % 20 == 0:
+                log(f"  {len(done) + n}/{len(tasks)} done")
+    except KeyboardInterrupt:
+        ex.shutdown(wait=False, cancel_futures=True)
+        jf.close()
+        log(f"\n[golden] interrupted - progress saved. Run again to resume ({jp.name}).")
+        raise
+    finally:
+        ex.shutdown(wait=True)
+        jf.close()
+    if failed:
+        log(f"[golden] {failed} task(s) failed and are not in the journal. Run again to retry just those; "
+            f"nothing was written to the golden set yet.")
+        return {"path": None, "rejected_path": None, "accepted": 0, "rejected": 0, "failed_calls": failed,
+                "by_type": {}, "incomplete": True}
     results.sort(key=lambda r: (r["type"], r["seed_chunk_ids"]))
     accepted = _dedupe([r for r in results if r["accepted"]])
     accepted = [r for r in accepted if r["accepted"]]
@@ -229,6 +300,7 @@ def run(chunks: list[Chunk], size: int, model: str, structure_aware: bool, seed:
         with open(path, "w") as f:
             for r in rows:
                 f.write(json.dumps(r, ensure_ascii=False) + "\n")
+    jp.unlink(missing_ok=True)                       # finished cleanly: next "generate" starts fresh
     by_type = {k: sum(r["type"] == k for r in accepted) for k in ("single", "multi", "unanswerable")}
     return {"path": str(out), "rejected_path": str(rej), "accepted": len(accepted), "rejected": len(rejected),
             "failed_calls": failed, "by_type": by_type}

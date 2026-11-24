@@ -21,6 +21,36 @@ def _load_dotenv(path: Path = ROOT / ".env") -> None:
 _load_dotenv()
 DATABASE_URL = os.environ.get("DATABASE_URL", "postgresql://auditgdpr:auditgdpr@localhost:5432/auditgdpr")   # pgvector runs in Docker (docker-compose.yml)
 DEFAULT_EXCLUDE = ("acme",)               # folders never ingested unless --exclude is overridden
+
+# --- Access control (row-level security) ----------------------------------------------------------
+# user role -> clearance. A role may read rows whose access_level <= its clearance.
+ROLES = {"intern": 0, "compliance_officer": 1, "compliance_director": 2}
+DEFAULT_ROLE = "intern"                                     # fail closed: the least-privileged role
+READER_ROLE = "auditgdpr_reader"                            # unprivileged Postgres login role used by retrieval; RLS applies to it
+READER_PASSWORD = os.environ.get("READER_PASSWORD", "auditgdpr_reader")
+
+
+def _reader_dsn() -> str:
+    from urllib.parse import urlsplit, urlunsplit
+    u = urlsplit(DATABASE_URL)
+    host = u.hostname + (f":{u.port}" if u.port else "")
+    return urlunsplit((u.scheme, f"{READER_ROLE}:{READER_PASSWORD}@{host}", u.path, u.query, u.fragment))
+
+
+READER_DATABASE_URL = os.environ.get("READER_DATABASE_URL") or _reader_dsn()
+
+# --- Elasticsearch (hybrid BM25 + dense retrieval) ---------------------------------------------------
+ES_URL = os.environ.get("ES_URL", "http://localhost:9200")
+ELASTIC_PASSWORD = os.environ.get("ELASTIC_PASSWORD", "auditgdpr")          # admin: ingest / sync only
+ES_READER_PASSWORD = os.environ.get("ES_READER_PASSWORD", "auditgdpr_reader")   # per-clearance read-only users (es_reader_<level>)
+
+# --- Retrieval / rerank / answer ----------------------------------------------------------------
+RERANK_MODEL = os.environ.get("RERANK_MODEL", "BAAI/bge-reranker-v2-m3")
+FETCH_K = 40          # candidates pulled from EACH of dense and BM25
+FUSE_K = 40           # candidates kept after RRF, sent to the reranker
+RRF_C = 60            # reciprocal-rank-fusion constant
+ANSWER_MODEL = "@cf/meta/llama-3.3-70b-instruct-fp8-fast"   # Workers AI
+MIN_RERANK_SCORE = 0.05   # best sigmoid rerank score below this -> "insufficient evidence" (tune on the golden set)
 EXPORT_DIR = ROOT / "artifacts"          # chunk dumps for inspection
 GOLDEN_DIR = EXPORT_DIR / "golden"       # golden evaluation sets
 GOLDEN_MODEL = "@cf/meta/llama-3.3-70b-instruct-fp8-fast"   # Cloudflare Workers AI
@@ -44,6 +74,8 @@ OVERLAP_TOKENS = 50          # only used when a single paragraph must be split /
 FIXED_CHUNK_TOKENS = 400     # baseline (non structure-aware) window
 
 EMBED_BATCH = 32
+
+PIPELINE_VERSION = 2   # bump when extract/parse/chunk logic changes -> every doc is re-chunked on the next ingest
 
 
 def collection_name(structure_aware: bool) -> str:

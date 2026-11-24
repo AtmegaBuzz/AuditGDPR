@@ -129,7 +129,19 @@ def run_golden() -> None:
     mode = _choose("Which chunking mode should the golden set match?",
                    ["structure-aware (recommended)", "fixed-window baseline"])
     sa = mode == 1
-    existing = golden_paths(sa)
+    from .golden import generate
+    resume_size = None
+    pend = generate.pending_run(sa)
+    if pend:
+        typer.echo(f"\nAn interrupted golden run was found: {pend[0]}/{pend[1]} tasks finished (target size {pend[2]}).")
+        pick = _choose("What now?", ["Resume where it stopped", "Start over (discard that progress)", "Exit"])
+        if pick == 3:
+            return
+        if pick == 1:
+            resume_size = pend[2]
+        else:
+            generate.journal_path(sa).unlink(missing_ok=True)
+    existing = golden_paths(sa) if resume_size is None else []
     if existing:
         typer.echo(f"\nA golden set already exists: {golden_count(sa)} items ({_rel(existing[0])}).")
         pick = _choose("What now?", ["Generate new (deletes the existing golden set, then regenerates)", "Exit"])
@@ -143,14 +155,15 @@ def run_golden() -> None:
     if not _have_credentials():
         typer.echo("\nSet CLOUDFLARE_ACCOUNT_ID and CLOUDFLARE_API_TOKEN (env or .env) first.")
         return
-    size = typer.prompt("Golden set size", default=200, type=int)
+    size = resume_size or typer.prompt("Golden set size", default=200, type=int)
 
-    from .golden import generate
     from .pipeline import build_chunks
     typer.echo("\nChunking the corpus...")
-    chunks = build_chunks(sa, config.EMBED_MODEL)
+    chunks = build_chunks(sa, config.EMBED_MODEL, exclude=())
     r = generate.run(chunks, size, config.GOLDEN_MODEL, sa, 42, 8, typer.echo)
     typer.echo(f"\naccepted {r['accepted']} {r['by_type']} | rejected {r['rejected']} | failed calls {r['failed_calls']}\n  {r['path']}")
+    if r.get("incomplete"):
+        typer.echo("Some calls failed. Choose 'Generate golden evaluation set' again and pick 'Resume' to retry only those.")
 
 
 def main_menu() -> None:

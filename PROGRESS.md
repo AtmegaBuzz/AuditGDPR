@@ -49,7 +49,7 @@ Known gaps (candidates for next iteration):
 - Tables / boxed examples are flattened to text.
 
 ### [D] Chunking — ✅  (`chunking/structure_aware.py`, `chunking/fixed.py`)
-Selected by the pipeline flag **`--structure-aware`**.
+Structure-aware is the default; `--fixed` selects the baseline (`--structure-aware/--fixed`).
 | | `--structure-aware` (on) | default (off, baseline) |
 |---|---|---|
 | Boundaries | never crosses a heading; one article / section = unit; oversize paragraphs split by sentence with overlap; tiny sections merged forward | sliding 400-token window, 50 overlap |
@@ -102,8 +102,8 @@ seeds.toml ─► bible (fact sheet, tier-tagged) ─► [human review, --freeze
 ```bash
 docker compose up -d                            # start Postgres+pgvector
 uv sync
-uv run auditgdpr ingest --structure-aware      # headers + metadata aware chunking  -> gdpr_structure_aware
-uv run auditgdpr ingest                         # baseline fixed windows             -> gdpr_fixed
+uv run auditgdpr ingest                         # (default) headers + metadata aware chunking  -> gdpr_structure_aware
+uv run auditgdpr ingest --fixed                 # baseline fixed windows             -> gdpr_fixed
 uv run auditgdpr ingest --structure-aware --dry-run   # chunk + export JSONL only (no GPU, no database)
 uv run auditgdpr ingest --only wp29 --structure-aware # subset of documents
 uv run auditgdpr search "72 hour breach notification" --structure-aware --k 5
@@ -136,3 +136,15 @@ src/auditgdpr/
 - 2026-11-23 — Qdrant moved from embedded local mode to Docker Compose; collections re-ingested.
 - 2026-11-23 — Qdrant replaced by Postgres + pgvector (Docker Compose); re-ingest required.
 - 2026-11-23 — [A]–[F] + basic [G]: structure-aware vs fixed ingestion pipeline running on Metal, Qdrant populated.
+
+## Access control (row-level security) — ✅
+Every chunk carries `access_level` (0 public · 1 internal · 2 confidential), from the doc's front matter (GDPR/EDPB/WP29 PDFs = public;
+unlabeled company docs = confidential, fail closed). Postgres RLS policy `clearance_read`: row visible iff `access_level <= app.clearance`.
+| Role | Clearance | Sees |
+|---|---|---|
+| `intern` (default) | 0 | public |
+| `compliance_officer` | 1 | public + internal |
+| `compliance_director` | 2 | everything |
+- Retrieval logs in as `auditgdpr_reader` (SELECT only, no BYPASSRLS, no access to `ingest_state`); `store.search(..., role=)` sets `app.clearance` per transaction and refuses a superuser connection.
+- `uv run auditgdpr search "..." --role compliance_officer` · `uv run auditgdpr access-demo` (same query, every role) · `uv run python tests/test_rls.py`
+- Ingest: `auditgdpr ingest` (data/, PDFs) and `auditgdpr ingest --root data/acme` (Markdown company docs) autodetect type by extension; incremental, `--force`/`--prune`.
